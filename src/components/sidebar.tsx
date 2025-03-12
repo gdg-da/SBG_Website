@@ -1,35 +1,55 @@
 "use client"
 
-import Link from "next/link"
-import { Home, Calendar, Users, PlusCircle, Award, Briefcase } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
-
-import {
-    Menubar,
-} from "@/components/ui/menubar"
-import { useEffect } from "react"
-
+import Link from "next/link";
+import { Home, Calendar, Users, PlusCircle, Award, Briefcase } from "lucide-react";
+import { Menubar } from "@/components/ui/menubar";
+import { useEffect, useState } from "react";
+import { auth, googleProvider } from "@/lib/firebaseConfig";
+import { signInWithPopup, signOut } from "firebase/auth";
 
 export function Sidebar() {
+    const [user, setUser] = useState(auth.currentUser);
 
     useEffect(() => {
-        const elements = document.getElementsByClassName('navlinks');
-        [...elements].forEach(ele => {
-            ele.addEventListener('click', () => {
-                [...elements].forEach(ele2 => {
-                    ele2.classList.remove('navlinks-active');
-                    ele2.classList.add('navlinks-inactive');
-                })
-                ele.classList.remove('navlinks-inactive');
-                ele.classList.add('navlinks-active');
-            })
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
         });
-    }, [])
+
+        const elements = document.getElementsByClassName("navlinks");
+        [...elements].forEach((ele) => {
+            ele.addEventListener("click", () => {
+                [...elements].forEach((ele2) => {
+                    ele2.classList.remove("navlinks-active");
+                    ele2.classList.add("navlinks-inactive");
+                });
+                ele.classList.remove("navlinks-inactive");
+                ele.classList.add("navlinks-active");
+            });
+        });
+
+        return () => unsubscribe(); 
+    }, []);
+
+    const handleLogin = async () => {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            if (!result.user.email?.endsWith("@daiict.ac.in")) {
+                await signOut(auth);
+                alert("Only @daiict.ac.in emails are allowed.");
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+        }
+    };
+
+    const handleLogout = async () => {
+        await signOut(auth);
+    };
 
     return (
         <nav className="m-4 w-fit flex justify-between items-center">
             <Menubar className="pl-4 pr-4 flex gap-6 justify-around items-center">
-                <Link href="/" className="navlinks navlinks-active flex items-center">
+                <Link href="/" className="navlinks navlinks-inactive flex items-center">
                     <Home className="inline-block mr-2" size={20} />Dashboard
                 </Link>
                 <Link href="/events" className="navlinks navlinks-inactive flex items-center">
@@ -47,30 +67,12 @@ export function Sidebar() {
                 <Link href="/add-event" className="navlinks navlinks-inactive flex items-center">
                     <PlusCircle className="inline-block mr-2" size={20} />Add Event
                 </Link>
+                {user ? (
+                    <button onClick={handleLogout} className="navlinks navlinks-inactive flex items-center">Logout ({user.displayName})</button>
+                ) : (
+                    <button onClick={handleLogin} className="navlinks navlinks-inactive flex items-center">Login</button>
+                )}
             </Menubar>
-
-            {/* <div className="p-4 flex justify-between items-center">
-                    <h1 className="text-2xl font-bold text-foreground">College Admin</h1>
-                    <ThemeToggle />
-                </div> */}
-            {/* <Link href="/" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <Home className="inline-block mr-2" size={20} />Dashboard
-                </Link>
-                <Link href="/events" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <Calendar className="inline-block mr-2" size={20} />Events
-                </Link>
-                <Link href="/clubs" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <Users className="inline-block mr-2" size={20} />Clubs
-                </Link>
-                <Link href="/committees" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <Briefcase className="inline-block mr-2" size={20} />Committees
-                </Link>
-                <Link href="/sbg" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <Award className="inline-block mr-2" size={20} />SBG
-                </Link>
-                <Link href="/add-event" className="block px-6 py-3 text-muted-foreground hover:bg-accent hover:text-accent-foreground">
-                    <PlusCircle className="inline-block mr-2" size={20} />Add Event
-                </Link> */}
         </nav>
-    )
+    );
 }
