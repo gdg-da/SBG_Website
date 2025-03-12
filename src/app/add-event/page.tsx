@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AddEvent() {
+    const [eventName, setEventName] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [hostedBy, setHostedBy] = useState("");
@@ -21,6 +22,22 @@ export default function AddEvent() {
     const [website, setWebsite] = useState("");
     const [hostEmail, setHostEmail] = useState("");
     const [eventPictures, setEventPictures] = useState("");
+    const [user, setUser] = useState(auth.currentUser);
+    const router = useRouter();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (!user || !user.email || !isSBGUser(user.email)) {
+                router.push("/");
+            } else {
+                setUser(user);
+            }
+        });
+
+        return () => unsubscribe();
+    }, [router]);
+
+    if (!user) return <p>Loading...</p>;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -34,7 +51,7 @@ export default function AddEvent() {
             bannerUrl,
             eventType,
             location,
-            website: website || null, // Handle optional field
+            website: website || null,
             hostEmail,
             eventPictures,
         };
@@ -48,7 +65,6 @@ export default function AddEvent() {
 
             if (response.ok) {
                 alert("Event added successfully!");
-                // Reset form fields
                 setEventName("");
                 setStartDate("");
                 setEndDate("");
@@ -67,27 +83,6 @@ export default function AddEvent() {
             console.error("Error submitting form:", error);
         }
     };
-
-    const [eventName, setEventName] = useState("")
-    const [eventDate, setEventDate] = useState("")
-    const [eventDescription, setEventDescription] = useState("")
-    const [user, setUser] = useState(auth.currentUser);
-    const router = useRouter();
-
-    useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (!user || !user.email || !isSBGUser(user.email)) {
-                router.push("/");
-            } else {
-                setUser(user);
-            }
-        });
-
-        return () => unsubscribe();
-    }, [router]);
-
-    if (!user) return <p>Loading...</p>;
-
 
     return (
         <div className="max-w-2xl mx-auto">
@@ -119,13 +114,7 @@ export default function AddEvent() {
                         </div>
                         <div>
                             <Label htmlFor="bannerUrl">Banner URL (Optional)</Label>
-                            <Input
-                                id="bannerUrl"
-                                type="url"
-                                value={bannerUrl}
-                                onChange={(e) => setBannerUrl(e.target.value)}
-                                placeholder="https://example.com/banner.jpg"
-                            />
+                            <Input id="bannerUrl" type="url" value={bannerUrl} onChange={(e) => setBannerUrl(e.target.value)} placeholder="https://example.com/banner.jpg" />
                         </div>
                         <div>
                             <Label htmlFor="eventType">Event Type</Label>
@@ -145,13 +134,7 @@ export default function AddEvent() {
                         </div>
                         <div>
                             <Label htmlFor="eventPictures">Event Pictures (Optional) (Google Drive Folder Link)</Label>
-                            <Input
-                                id="eventPictures"
-                                type="url"
-                                value={eventPictures}
-                                onChange={(e) => setEventPictures(e.target.value)}
-                                placeholder="https://drive.google.com/folderview?id=..."
-                            />
+                            <Input id="eventPictures" type="url" value={eventPictures} onChange={(e) => setEventPictures(e.target.value)} placeholder="https://drive.google.com/folderview?id=..." />
                         </div>
                         <Button type="submit" className="w-full">Add Event</Button>
                     </form>
