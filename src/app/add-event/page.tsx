@@ -1,6 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation";
+import { auth } from "@/lib/firebaseConfig";
+import { isSBGUser } from "@/lib/checkSBG";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -11,6 +14,22 @@ export default function AddEvent() {
     const [eventName, setEventName] = useState("")
     const [eventDate, setEventDate] = useState("")
     const [eventDescription, setEventDescription] = useState("")
+    const [user, setUser] = useState(auth.currentUser);
+    const router = useRouter();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            if (!user || !user.email || !isSBGUser(user.email)) {
+                router.push("/");
+            } else {
+                setUser(user);
+            }
+        });
+
+        return () => unsubscribe();
+    }, [router]);
+
+    if (!user) return <p>Loading...</p>;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()

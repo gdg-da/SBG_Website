@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { Home, Calendar, Users, PlusCircle, Award, Briefcase } from "lucide-react";
@@ -6,6 +6,7 @@ import { Menubar } from "@/components/ui/menubar";
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
 import { signInWithPopup, signOut } from "firebase/auth";
+import { isSBGUser } from "@/lib/checkSBG";
 
 export function Sidebar() {
     const [user, setUser] = useState(auth.currentUser);
@@ -27,7 +28,7 @@ export function Sidebar() {
             });
         });
 
-        return () => unsubscribe(); 
+        return () => unsubscribe();
     }, []);
 
     const handleLogin = async () => {
@@ -64,13 +65,19 @@ export function Sidebar() {
                 <Link href="/sbg" className="navlinks navlinks-inactive flex items-center">
                     <Award className="inline-block mr-2" size={20} />SBG
                 </Link>
-                <Link href="/add-event" className="navlinks navlinks-inactive flex items-center">
-                    <PlusCircle className="inline-block mr-2" size={20} />Add Event
-                </Link>
+                {user && user.email && isSBGUser(user.email) && (
+                    <Link href="/add-event" className="navlinks navlinks-inactive flex items-center">
+                        <PlusCircle className="inline-block mr-2" size={20} />Add Event
+                    </Link>
+                )}
                 {user ? (
-                    <button onClick={handleLogout} className="navlinks navlinks-inactive flex items-center">Logout ({user.displayName})</button>
+                    <button onClick={handleLogout} className="navlinks navlinks-inactive flex items-center">
+                        Logout ({user.displayName})
+                    </button>
                 ) : (
-                    <button onClick={handleLogin} className="navlinks navlinks-inactive flex items-center">Login</button>
+                    <button onClick={handleLogin} className="navlinks navlinks-inactive flex items-center">
+                        Login
+                    </button>
                 )}
             </Menubar>
         </nav>

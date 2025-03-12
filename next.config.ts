@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
         FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
         FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
         MONGO_URI: process.env.MONGO_URI,
+        SBG_EMAIL: process.env.SBG_EMAIL,
     }
 };
 
