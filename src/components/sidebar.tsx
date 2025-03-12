@@ -50,7 +50,7 @@ export function Sidebar() {
     return (
         <nav className="m-4 w-fit flex justify-between items-center">
             <Menubar className="pl-4 pr-4 flex gap-6 justify-around items-center">
-                <Link href="/" className="navlinks navlinks-inactive flex items-center">
+                <Link href="/" className="navlinks navlinks-active flex items-center">
                     <Home className="inline-block mr-2" size={20} />Dashboard
                 </Link>
                 <Link href="/events" className="navlinks navlinks-inactive flex items-center">
