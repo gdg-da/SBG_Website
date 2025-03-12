@@ -27,7 +27,7 @@ export default function CommitteePage() {
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">{committee.name}</h1>
-            <p className="text-lg text-gray-600">{committee.description}</p>
+            <p className="text-lg">{committee.description}</p>
 
             <Card>
                 <CardHeader>

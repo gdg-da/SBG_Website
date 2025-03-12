@@ -1,119 +1,54 @@
-import Image from "next/image"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import clubsData from "@/data/clubs.json";
 
-// This is dummy data. In a real application, you'd fetch this data from an API
-const clubData = {
-    id: 1,
-    name: "Debate Club",
-    description: "A platform for students to enhance their public speaking and critical thinking skills.",
-    convener: { name: "John Doe", email: "john@example.com" },
-    deputyConvener: { name: "Jane Smith", email: "jane@example.com" },
-    coreMembers: [
-        { name: "Alice Johnson", role: "Secretary", email: "alice@example.com" },
-        { name: "Bob Williams", role: "Treasurer", email: "bob@example.com" },
-    ],
-    teamMembers: [
-        { name: "Charlie Brown", email: "charlie@example.com" },
-        { name: "Diana Ross", email: "diana@example.com" },
-    ],
-    events: [
-        { id: 1, name: "Annual Debate Competition", date: "2023-06-15" },
-        { id: 2, name: "Public Speaking Workshop", date: "2023-07-10" },
-    ],
-    photos: [
-        { id: 1, url: "/placeholder.svg?height=200&width=300", alt: "Debate Competition 2022" },
-        { id: 2, url: "/placeholder.svg?height=200&width=300", alt: "Team Building Event" },
-    ],
-}
+export default function ClubPage({ params }: { params: { id: string } }) {
+    const club = clubsData.clubs.find((c) => c.id.toString() === params.id);
 
-export default function ClubPage() {
-    // In a real application, you'd fetch the club data based on the id
-    // const club = await getClub(params.id)
-    const club = clubData
+    if (!club) {
+        return notFound();
+    }
 
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">{club.name}</h1>
-            <p className="text-lg text-gray-600">{club.description}</p>
-
+            <p className="text-lg">{club.description}</p>
             <Card>
                 <CardHeader>
                     <CardTitle>Leadership</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p>
-                        <strong>Convener:</strong> {club.convener.name} ({club.convener.email})
-                    </p>
-                    <p>
-                        <strong>Deputy Convener:</strong> {club.deputyConvener.name} ({club.deputyConvener.email})
-                    </p>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex items-center gap-4">
+                            {club.convernerPhoto && (<Image src={club.convernerPhoto} alt={club.convenerName} width={50} height={50} className="rounded-full" />)}
+                            <p><strong>Convener:</strong> {club.convenerName}</p>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            {club.dyConvernerPhoto && (<Image src={club.dyConvernerPhoto} alt={club.dyConvenerName} width={50} height={50} className="rounded-full" />)}
+                            <p><strong>Deputy Convener:</strong> {club.dyConvenerName}</p>
+                        </div>
+                    </div>
                 </CardContent>
             </Card>
-
             <Card>
                 <CardHeader>
-                    <CardTitle>Core Members</CardTitle>
+                    <CardTitle>Club Contact Details</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <ul>
-                        {club.coreMembers.map((member, index) => (
-                            <li key={index}>
-                                {member.name} - {member.role} ({member.email})
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="flex flex-col gap-4">
+                        <p><strong>Email:</strong> {club.email}</p>
+                    </div>
                 </CardContent>
             </Card>
-
             <Card>
-                <CardHeader>
-                    <CardTitle>Team Members</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ul>
-                        {club.teamMembers.map((member, index) => (
-                            <li key={index}>
-                                {member.name} ({member.email})
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Upcoming Events</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <ul>
-                        {club.events.map((event) => (
-                            <li key={event.id}>
-                                {event.name} - {event.date}
-                            </li>
-                        ))}
-                    </ul>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>Event Photos</CardTitle>
-                </CardHeader>
+                <CardHeader><CardTitle>Club Photos</CardTitle></CardHeader>
                 <CardContent>
                     <div className="grid grid-cols-2 gap-4">
-                        {club.photos.map((photo) => (
-                            <Image
-                                key={photo.id}
-                                src={photo.url || "/placeholder.svg"}
-                                alt={photo.alt}
-                                width={300}
-                                height={200}
-                                className="rounded-lg"
-                            />
-                        ))}
+                        {club.clubGroupPhoto && (<Image src={club.clubGroupPhoto} alt={`${club.name} Group Photo`} width={300} height={200} className="rounded-lg" />)}
                     </div>
                 </CardContent>
             </Card>
         </div>
-    )
+    );
 }

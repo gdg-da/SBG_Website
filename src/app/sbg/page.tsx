@@ -39,7 +39,7 @@ export default function SBGPage() {
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold">Student Body Government (SBG)</h1>
-            <p className="text-lg text-gray-600">{sbgData.description}</p>
+            <p className="text-lg">{sbgData.description}</p>
 
             {sbgData.members.map((yearGroup, index) => (
                 <Card key={index}>

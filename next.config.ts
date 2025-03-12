@@ -12,7 +12,13 @@ const nextConfig: NextConfig = {
         FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
         MONGO_URI: process.env.MONGO_URI,
         SBG_EMAIL: process.env.SBG_EMAIL,
-    }
+    },
+    images: {
+        domains: [
+            'firebasestorage.googleapis.com',
+            'drive.google.com'
+        ],
+    },
 };
 
 export default nextConfig;
