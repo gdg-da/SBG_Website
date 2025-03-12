@@ -3,8 +3,15 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import clubsData from "@/data/clubs.json";
 
-export default function ClubPage({ params }: { params: { id: string } }) {
-    const club = clubsData.clubs.find((c) => c.id.toString() === params.id);
+export async function generateStaticParams() {
+    return clubsData.clubs.map((club) => ({
+        id: club.id.toString(),
+    }));
+}
+
+export default async function ClubPage({ params }: { params: { id: string } }) {
+    const resolvedParams = await params;
+    const club = clubsData.clubs.find((c) => c.id.toString() === resolvedParams.id);
 
     if (!club) {
         return notFound();
@@ -32,21 +39,13 @@ export default function ClubPage({ params }: { params: { id: string } }) {
                 </CardContent>
             </Card>
             <Card>
-                <CardHeader>
-                    <CardTitle>Club Contact Details</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-col gap-4">
-                        <p><strong>Email:</strong> {club.email}</p>
-                    </div>
-                </CardContent>
+                <CardHeader><CardTitle>Club Contact Details</CardTitle></CardHeader>
+                <CardContent><div className="flex flex-col gap-4"><p><strong>Email:</strong> {club.email}</p></div></CardContent>
             </Card>
             <Card>
                 <CardHeader><CardTitle>Club Photos</CardTitle></CardHeader>
                 <CardContent>
-                    <div className="grid grid-cols-2 gap-4">
-                        {club.clubGroupPhoto && (<Image src={club.clubGroupPhoto} alt={`${club.name} Group Photo`} width={300} height={200} className="rounded-lg" />)}
-                    </div>
+                    <div className="grid grid-cols-2 gap-4">{club.clubGroupPhoto && (<Image src={club.clubGroupPhoto} alt={`${club.name} Group Photo`} width={300} height={200} className="rounded-lg" />)}</div>
                 </CardContent>
             </Card>
         </div>

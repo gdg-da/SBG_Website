@@ -1,0 +1,92 @@
+{
+    "committees": [
+        {
+            "id": 1,
+            "name": "Annual Festival Committee",
+            "email": "synapse@daiict.ac.in",
+            "convenerName": "Rishabh Jain",
+            "convenerPhoto": "https://drive.google.com/open?id=1NdMaHxjKKYWjT5FGUGOPTFzTratHHywm",
+            "dyConvenerName": "Devamm Patel",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=1GUMNl3PSX8rDvY7H9kmcSr0pTej0jXbx",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1f9f6I5a_2z68Y_zIxiYIHP_Z0QQbnJWi",
+            "description": "Under the Annual Fest Committee, we conduct diverse events ranging from Synapse, The Largest Annual Techno-Cultural Fest of Gujarat, to Social Initiatives, which include Hackathon named HackOut and Marathon named YouthRun."
+        },
+        {
+            "id": 2,
+            "name": "Student Placement Cell",
+            "email": "spc@daiict.ac.in",
+            "convenerName": "Manan Patel",
+            "convenerPhoto": "https://drive.google.com/open?id=1a0RKhqVKzsy5HGQa1CdFI-Cs5Ux9ZQ8i",
+            "dyConvenerName": "Rishit Unadkat",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=15BrK2UQkFWtTk6FlrWUFQkWsdUWkRCmn",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1QL65N6vYJDL7WWqcyro5KJ-z5W8uxZj-",
+            "description": "The Student Placement Cell (SPC) acts as a crucial bridge between the student community and the placement office, ensuring the smooth functioning of placement drives. The primary objective of the SPC is to facilitate a smooth and efficient process for both students and recruiters. SPC plays a pivotal role in organizing various activities designed to enhance students' readiness for the recruitment process. These include conducting pre-placement tests to help students strengthen their aptitude and coding skills, arranging mock interviews to build confidence and refine their performance, and hosting interactive sessions led by company representatives to provide insights into industry expectations. Additionally, SPC facilitates experience-sharing sessions with alumni, where students can gain valuable guidance and inspiration from their seniors. Group discussions are also conducted to develop critical communication and teamwork skills, which are essential for professional success. Through these efforts, SPC not only ensures the smooth coordination of placement-related activities but also fosters a culture of preparedness and excellence among students."
+        },
+        {
+            "id": 3,
+            "name": "Cafeteria Management Committee",
+            "email": "cmc@daiict.ac.in",
+            "convenerName": "Jayesh Padiya",
+            "convenerPhoto": "https://drive.google.com/open?id=1vB8ejVCr1FYLOZ5LgcykqVKxLenxtdDj",
+            "dyConvenerName": "Prince Sojitra",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=1sGCYVrBOvBw2-JGinohzcHJf91eeA5O5",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1cFoNhshr7_0poayhrpHYHJWGoqndLEWn",
+            "description": "Cafeteria Management Committee (CMC) addresses the issues related to cafeteria of DA-IICT. It does regular inspection of all the counters in the cafeteria and ensure that proper hygienic standards are maintained. It works as an intermediate body between the students and the administration of DA-IICT. It resolves issues raised by the students regarding cafeteria. They convey problems related to hygiene and quality of food available at DA-IICT cafeteria. Along with SBG Core and administration department of DA-IICT, they play an active role in deciding the price of food items and make sure that neither students nor the vendors are at loss."
+        },
+        {
+            "id": 4,
+            "name": "Academic Committee",
+            "email": "sbg_academics@daiict.ac.in",
+            "convenerName": "Yash Tarpara",
+            "convenerPhoto": "https://drive.google.com/open?id=1eepLC6I-QiEjScmsB6MahRKTQUGTYxCl",
+            "dyConvenerName": "Parshv Joshi",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=143YbIklAMoW_0e_RM9AqiLsrPquZKQOW",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1CThUTLtGclxATabywSYIWrgZaBuXFfVy",
+            "description": "The Academic Committee works as an interface between the student community and the administration of the institute (including Dean (Academic Programs), Registrar, Institute Committees, and the Director) for the development of the academic environment, and enhancement of academic life at DA-IICT. Their primary function is to convey the views, concerns, and problems, related to academics, of the student community to the institute administration (specifically, the various academic related committees of the institute) so as to enhance the quality of academic life and programs, and foster a conducive academic environment in the institute. Also, to organize activities that will enhance the academic aspects of student life in any and every possible way."
+        },
+        {
+            "id": 5,
+            "name": "TechSupport Committee",
+            "email": "tech_support@daiict.ac.in",
+            "convenerName": "Raj Chauhan",
+            "convenerPhoto": "https://drive.google.com/open?id=13-zrGnf4O0woz8N479McXtZSuj5dvykH",
+            "dyConvenerName": "Parshwa Modi",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=18rS7abW5uLGeOjItgYarbRd7DI5pZ7tj",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1ZbFcehXg8k6wpyYf-gvYsruJ1na182xH",
+            "description": "The primary role of the TechSupport Committee is to represent student views and issues related to ICT resources (Wi-Fi, Printer Services etc.) to the concerned authorities (Help Desk, System Admin and ICT Convener) and vice versa. Also, to coordinate information over various tools and technologies (e.g. Moodle) which are used in daily life by the DAIICT community. Further, we play an active role in all the technical assistance required for all the events on campus including sound & light setup, production and maintenance of the technical inventory."
+        },
+        {
+            "id": 6,
+            "name": "Sports Committee",
+            "email": "sports@daiict.ac.in",
+            "convenerName": "Aarya Javia",
+            "convenerPhoto": "https://drive.google.com/open?id=1efZRvY3hdYOdjz_0WwFaa6rLB-u39p3u",
+            "dyConvenerName": "Alin Kansagra",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=1qenHS7Vw5BDkh0APt47-IzANFTuccddf",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1KJoTyga7lqE1T9KuuALbhNOSEqDH84mr",
+            "description": "The Sports Committee at DA-IICT is a vibrant and dynamic group dedicated to promoting physical fitness, teamwork, and a spirit of healthy competition among students. Our vision is to foster a culture where sports and academics go hand in hand, creating an environment that encourages holistic development. Our Purpose: To provide opportunities for students to explore, participate, and excel in various sports, fostering both physical and mental well-being. Our Vision: To establish DA-IICT as a hub of sporting excellence, where every student has access to high-quality facilities, expert guidance, and a supportive community that nurtures their athletic potential. Key Activities: Organizing Concours, our flagship inter-university sports tournament, which brings together athletes from top institutions for an intense and thrilling competition. Hosting DCL (DA-IICT Cricket League), an intra-university cricket tournament that celebrates the passion and talent of cricket enthusiasts. Conducting the Inter-Wing Tournament, an event featuring a variety of sports, aimed at fostering unity and friendly rivalry among campus wings. Hosting the Freshers' Weekend, where first-year students participate in a variety of sports to interact, bond, and immerse themselves in campus life. Notable Achievements: Successfully hosting Concours, recognized for its exceptional organization and competitive spirit. Establishing DCL and the Inter-Wing Tournament as highlights of DA-IICT’s sporting calendar, with overwhelming participation each year."
+        },
+        {
+            "id": 7,
+            "name": "Cultural Committee",
+            "email": "cultural@daiict.ac.in",
+            "convenerName": "Ansh Garg",
+            "convenerPhoto": "https://drive.google.com/open?id=1aEzzLkT9bLaBedyDtrZw00JPn8OClsH2",
+            "dyConvenerName": "Kavan Patel",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=1s9PQtt5KE0Qy5soUe-3ZvPgxtJvso13J",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1P-47AzKxd0_rVe7pZ0lxp1aGQFdk1ZTH",
+            "description": "We are an enthusiastic group of people involved in keeping the Culture of DA-IICT alive. We organize different events where people showcase their talent or, just simply, have fun. We also organize all the festivals, zealously, seeing active participation from our entire student community."
+        },
+        {
+            "id": 8,
+            "name": "IEEE",
+            "email": "ieee@daiict.ac.in",
+            "convenerName": "Rishi Shah",
+            "convenerPhoto": "https://drive.google.com/open?id=1O_Z3eQbyK4LITCf6KiO3s5p6Jh7eahDa",
+            "dyConvenerName": "Shrestha Thakkar",
+            "dyConvenerPhoto": "https://drive.google.com/open?id=10uzo2qhej5Ue8HFYhInc1eXh-ZyrF1I6",
+            "committeeGroupPhoto": "https://drive.google.com/open?id=1xRYC6nHXKOSc7M92g4eZry4IjuZWKtdU",
+            "description": "The IEEE student branch DAIICT endevours to promote student awareness on the opportunities that exist in the field of engineering. Our objective is to bridge the gap between industries and engineering students by providing an interactive platform for Students to develop professional and technical abilities. To accomplish this objective, we organise various technical events. We aim to bring in budding engineers from all over India to a common platform so that they can share their knowledge with their fellow imaginers. Here are some of the events organised by us throughout the year: i.Fest, Manual Robotics Workshop, Summer School, Tic-Tech-Toe, MUN, Think Tank and various speaker sessions and bootcamps."
+        }
+    ]
+}
