@@ -6,7 +6,7 @@ import { Menubar } from "@/components/ui/menubar";
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { isSBGUser } from "@/lib/checkSBG";
+import { isSBGUser, isGDGUser } from "@/lib/checkSBG";
 
 export function Sidebar() {
     const [user, setUser] = useState(auth.currentUser);
@@ -65,7 +65,7 @@ export function Sidebar() {
                 <Link href="/sbg" className="navlinks navlinks-inactive flex items-center">
                     <Award className="inline-block mr-2" size={20} />SBG
                 </Link>
-                {user && user.email && isSBGUser(user.email) && (
+                {user && user.email && (isSBGUser(user.email) || isGDGUser(user.email)) && (
                     <Link href="/add-event" className="navlinks navlinks-inactive flex items-center">
                         <PlusCircle className="inline-block mr-2" size={20} />Add Event
                     </Link>
