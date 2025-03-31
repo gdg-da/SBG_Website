@@ -118,7 +118,17 @@ export default function AddEvent() {
                         </div>
                         <div>
                             <Label htmlFor="eventType">Event Type</Label>
-                            <Input id="eventType" value={eventType} onChange={(e) => setEventType(e.target.value)} required />
+                            <select
+                                id="eventType"
+                                value={eventType}
+                                onChange={(e) => setEventType(e.target.value)}
+                                required
+                                className="border rounded p-2 w-full" // Adjust styling as needed
+                            >
+                                <option value="event">Event</option>
+                                <option value="exam">Exam</option>
+                                <option value="session">Session</option>
+                            </select>
                         </div>
                         <div>
                             <Label htmlFor="location">Location</Label>

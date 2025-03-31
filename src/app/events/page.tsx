@@ -1,79 +1,25 @@
 "use client"
 
-import React, { useEffect } from "react"
-import { Calendar, dateFnsLocalizer } from "react-big-calendar"
-import { format } from "date-fns"
-import { parse } from "date-fns/parse"
-import { startOfWeek } from "date-fns/startOfWeek"
-import { getDay } from "date-fns/getDay"
-import { enUS } from "date-fns/locale/en-US"
+import React, { useEffect, useState } from "react"
+import { Calendar, momentLocalizer } from "react-big-calendar"
+import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useTheme } from "next-themes"
 
-const locales = {
-    "en-US": enUS,
-}
+const localizer = momentLocalizer(moment);
 
-const localizer = dateFnsLocalizer({
-    format,
-    parse,
-    startOfWeek,
-    getDay,
-    locales,
-})
-
-// Dummy data for events
-const events = [
-    {
-        id: 1,
-        title: "Annual Debate Competition",
-        start: new Date(2023, 5, 15),
-        end: new Date(2023, 5, 15),
-        allDay: true,
-        location: "Main Auditorium",
-        website: "https://example.com/debate-competition",
-        type: "club",
-    },
-    {
-        id: 2,
-        title: "Final Exams",
-        start: new Date(2023, 5, 20),
-        end: new Date(2023, 5, 30),
-        allDay: true,
-        location: "Examination Halls",
-        website: "https://example.com/final-exams",
-        type: "exam",
-    },
-    {
-        id: 3,
-        title: "Robotics Workshop",
-        start: new Date(2023, 6, 5, 10, 0),
-        end: new Date(2023, 6, 5, 16, 0),
-        location: "Engineering Building, Room 101",
-        website: "https://example.com/robotics-workshop",
-        type: "club",
-    },
-    {
-        id: 4,
-        title: "Guest Lecture: AI in Healthcare",
-        start: new Date(2023, 6, 10, 14, 0),
-        end: new Date(2023, 6, 10, 16, 0),
-        location: "Science Center Auditorium",
-        website: "https://example.com/ai-healthcare-lecture",
-        type: "session",
-    },
-]
+// let events = [];
 
 const EventComponent = ({ event }: { event: any }) => (
     <div>
-        <strong>{event.title}</strong>
+        <strong>{event.eventName}</strong>
         <p>{event.location}</p>
-        <Link href={event.website} target="_blank" rel="noopener noreferrer">
+        <Link href={event.website??""} target="_blank" rel="noopener noreferrer">
             <Button variant="link" size="sm">
-                Event Details
+                {event.aboutEvent}
             </Button>
         </Link>
     </div>
@@ -82,10 +28,35 @@ const EventComponent = ({ event }: { event: any }) => (
 export default function EventsPage() {
     const { theme } = useTheme()
     const [mounted, setMounted] = React.useState(false)
+    const [events, setEvents] = useState([]);
+    const [date, setDate] = useState(new Date());
+
+    const handleNavigate = (newDate: Date) => {
+        setDate(newDate);
+    };
 
     // Ensure we only access theme on the client side
     useEffect(() => {
         setMounted(true)
+        const fetchEvents = async () => {
+            try {
+                const response = await fetch("/api/events", {
+                    method: "GET"
+                });
+
+                if (response.ok) {
+                    response.json().then(value=>{
+                        setEvents(value);
+                        console.log("Events:", events);
+                    });
+                } else {
+                    alert("Failed to load events");
+                }
+            } catch (error) {
+                console.error("Error Loading Event Page:", error);
+            }
+        }
+        fetchEvents();
     }, [])
 
     if (!mounted) {
@@ -118,8 +89,8 @@ export default function EventsPage() {
                         <Calendar
                             localizer={localizer}
                             events={events}
-                            startAccessor="start"
-                            endAccessor="end"
+                            startAccessor="startDate"
+                            endAccessor="endDate"
                             style={calendarStyles}
                             components={{
                                 event: EventComponent,
@@ -130,6 +101,8 @@ export default function EventsPage() {
                                 if (event.type === "session") backgroundColor = "#388e3c"
                                 return { style: { backgroundColor } }
                             }}
+                            date={date}
+                            onNavigate={handleNavigate}
                         />
                     </div>
                 </CardContent>
