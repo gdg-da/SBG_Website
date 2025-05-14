@@ -11,9 +11,26 @@ import { useTheme } from "next-themes"
 
 const localizer = momentLocalizer(moment);
 
+type Event = {
+  _id: string;
+  eventName: string;
+  aboutEvent: string;
+  eventType: string;
+  location: string;
+  startDate: string; 
+  endDate: string;   
+  hostedBy: string;
+  hostEmail: string;
+  bannerUrl: string;
+  eventPictures: string;
+  website: string | null;
+  createdAt: string; 
+  updatedAt: string;
+  __v: number;
+};
 // let events = [];
 
-const EventComponent = ({ event }: { event: any }) => (
+const EventComponent = ({ event }: { event: Event }) => (
     <div>
         <strong>{event.eventName}</strong>
         <p>{event.location}</p>
@@ -47,7 +64,7 @@ export default function EventsPage() {
                 if (response.ok) {
                     response.json().then(value=>{
                         setEvents(value);
-                        console.log("Events:", events);
+                        console.log("Events:", value);
                     });
                 } else {
                     alert("Failed to load events");
