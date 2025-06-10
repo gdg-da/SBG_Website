@@ -1,15 +1,15 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { Sidebar } from "@/components/sidebar"
+import { Navbar } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "GDG Website",
-    description: "Official website for GDG DA-IICT",
+    title: "DAIICT Portal",
+    description: "Student Body Government Portal",
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
@@ -21,8 +21,8 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
             <body className={inter.className}>
                 <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
                     <div className="h-screen bg-background">
-                        <Sidebar />
-                        <main className="overflow-y-auto p-8">{children}</main>
+                        <Navbar />
+                        <main className="overflow-y-auto">{children}</main>
                     </div>
                 </ThemeProvider>
             </body>
