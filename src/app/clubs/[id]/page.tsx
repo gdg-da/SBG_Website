@@ -3,21 +3,19 @@ import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import clubsData from "@/data/clubs.json";
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
 export async function generateStaticParams() {
     return clubsData.clubs.map((club) => ({
         id: club.id.toString(),
     }));
 }
 
-export default async function ClubPage({ params }: PageProps) {
-    const resolvedParams = await params;
-    const club = clubsData.clubs.find((c) => c.id.toString() === resolvedParams.id);
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function ClubPage({ params }: Props) {
+   const { id } = await params;
+    const club = clubsData.clubs.find((c) => c.id.toString() === id);
 
     if (!club) {
         return notFound();

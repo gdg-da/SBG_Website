@@ -9,9 +9,13 @@ export async function generateStaticParams() {
     }));
 }
 
-export default async function CommitteePage({ params }: { params: { id: string } }) {
-    const resolvedParams = await params;
-    const committee = committeesData.committees.find((c) => c.id.toString() === resolvedParams.id);
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function CommitteePage({ params }: Props) {
+    const { id } = await params;
+    const committee = committeesData.committees.find((c) => c.id.toString() === id);
 
     if (!committee) {
         return notFound();
