@@ -14,8 +14,8 @@ export default function HomePage() {
                 <Image
                     src={sbglogo} // Path relative to /public
                     alt="Event Banner"
-                    width={180} // Desired display width
-                    height={180} // Desired display height
+                    width={200} // Desired display width
+                    height={200} // Desired display height
                     className="mb-4"
                     priority
                 />
@@ -47,7 +47,7 @@ export default function HomePage() {
                         <CardTitle>Active Clubs</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-2xl font-bold">12</p>
+                        <p className="text-2xl font-bold">25</p>
                     </CardContent>
                 </Card>
 
@@ -56,7 +56,7 @@ export default function HomePage() {
                         <CardTitle>Committees</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-2xl font-bold">8</p>
+                        <p className="text-2xl font-bold">9</p>
                     </CardContent>
                 </Card>
             </div>

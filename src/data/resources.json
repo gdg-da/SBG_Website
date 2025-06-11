@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "category": "Guide",
+    "title": "BTech IT Resources Access Guidance",
+    "description": "Guide to access internet, intranet and moodle at DAU.",
+    "by": "IT Department",
+    "link": "https://drive.google.com/file/d/1WHEl_1nl1dNvhgoHwk4BXKrRaGgY8LFT/view?usp=drive_link"
+  },
+  {
+    "id": 2,
+    "category": "Programming",
+    "title": "Bit Manipulation practice questions",
+    "description": "",
+    "by":"Programming Club",
+    "link": "https://drive.google.com/file/d/1tvP_dL7aUVOgCq-JJfuE6MLpDCSF7SBH/view?usp=drive_link"
+  },
+  {
+    "id": 3,
+    "category": "Programming",
+    "title": "Bit Manipulation theory",
+    "description": "",
+    "by":"Programming Cub",
+    "link": "https://drive.google.com/file/d/1bzCsoMhlP9TSHDA4iw10zpLP0V9LCGnF/view?usp=drive_link"
+  },
+  {
+    "id": 4,
+    "category": "Development",
+    "title": "Developement Resources",
+    "description": "Curated list of resources to learn different fields of developement",
+    "by":"Google Developer Groups DAIICT",
+    "link": "https://drive.google.com/file/d/1yulaMC9mFtpyPiIVqhM3_vLEcAcpS-jC/view?usp=drive_link"
+  },
+  {
+    "id": 5,
+    "category": "Acad",
+    "title": "Academic Guidebook",
+    "description": "",
+    "by":"Parva Raval(PDR) 2027 batch",
+    "link": "https://docs.google.com/document/d/1_AZCPiDy5tQ0k-XmMynq1I1Vt5HnFwX4_aaCHyZ3GfY/edit?usp=sharing"
+  },
+  {
+    "id": 6,
+    "category": "Other",
+    "title": "DAU Cutoff 2024",
+    "description": "",
+    "by":"DAU students of 2027 batch",
+    "link": "https://docs.google.com/spreadsheets/d/14SNUZXgfeRxd-PKvJk5Xi5ilJmQshFZwDlFBA08VViA/edit?usp=drive_link"
+  }
+]
