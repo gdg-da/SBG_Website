@@ -25,7 +25,7 @@
         "lucide-react": "^0.344.0",
         "moment": "^2.30.1",
         "mongoose": "^8.1.3",
-        "next": "^14.1.0",
+        "next": "^15.3.3",
         "next-themes": "^0.2.1",
         "nookies": "^2.5.2",
         "react": "^18.2.0",
@@ -45,7 +45,7 @@
         "@types/react-big-calendar": "^1.8.8",
         "@types/react-dom": "^18.2.19",
         "eslint": "^8.56.0",
-        "eslint-config-next": "14.1.0",
+        "eslint-config-next": "^15.3.3",
         "postcss": "^8.4.35",
         "tailwindcss": "^3.4.1",
         "typescript": "^5.3.3"
