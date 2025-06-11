@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
         FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
         MONGO_URI: process.env.MONGO_URI,
         SBG_EMAIL: process.env.SBG_EMAIL,
+        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
     },
     images: {
         domains: [

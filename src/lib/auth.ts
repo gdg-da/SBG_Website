@@ -6,9 +6,9 @@ export const signInWithGoogle = async () => {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
 
-        if (!user.email?.endsWith("@daiict.ac.in")) {
+        if (!user.email?.endsWith("@dau.ac.in")) {
             await signOut(auth);
-            throw new Error("Only @daiict.ac.in email addresses are allowed.");
+            throw new Error("Only @dau.ac.in email addresses are allowed.");
         }
 
         return user;

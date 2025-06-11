@@ -3,7 +3,7 @@
         {
             "id": 1,
             "name": "Annual Festival Committee",
-            "email": "synapse@daiict.ac.in",
+            "email": "synapse@dau.ac.in",
             "convenerName": "Rishabh Jain",
             "convenerPhoto": "https://drive.google.com/open?id=1NdMaHxjKKYWjT5FGUGOPTFzTratHHywm",
             "dyConvenerName": "Devamm Patel",
@@ -14,7 +14,7 @@
         {
             "id": 2,
             "name": "Student Placement Cell",
-            "email": "spc@daiict.ac.in",
+            "email": "spc@dau.ac.in",
             "convenerName": "Manan Patel",
             "convenerPhoto": "https://drive.google.com/open?id=1a0RKhqVKzsy5HGQa1CdFI-Cs5Ux9ZQ8i",
             "dyConvenerName": "Rishit Unadkat",
@@ -25,7 +25,7 @@
         {
             "id": 3,
             "name": "Cafeteria Management Committee",
-            "email": "cmc@daiict.ac.in",
+            "email": "cmc@dau.ac.in",
             "convenerName": "Jayesh Padiya",
             "convenerPhoto": "https://drive.google.com/open?id=1vB8ejVCr1FYLOZ5LgcykqVKxLenxtdDj",
             "dyConvenerName": "Prince Sojitra",
@@ -36,7 +36,7 @@
         {
             "id": 4,
             "name": "Academic Committee",
-            "email": "sbg_academics@daiict.ac.in",
+            "email": "sbg_academics@dau.ac.in",
             "convenerName": "Yash Tarpara",
             "convenerPhoto": "https://drive.google.com/open?id=1eepLC6I-QiEjScmsB6MahRKTQUGTYxCl",
             "dyConvenerName": "Parshv Joshi",
@@ -47,7 +47,7 @@
         {
             "id": 5,
             "name": "TechSupport Committee",
-            "email": "tech_support@daiict.ac.in",
+            "email": "tech_support@dau.ac.in",
             "convenerName": "Raj Chauhan",
             "convenerPhoto": "https://drive.google.com/open?id=13-zrGnf4O0woz8N479McXtZSuj5dvykH",
             "dyConvenerName": "Parshwa Modi",
@@ -58,7 +58,7 @@
         {
             "id": 6,
             "name": "Sports Committee",
-            "email": "sports@daiict.ac.in",
+            "email": "sports@dau.ac.in",
             "convenerName": "Aarya Javia",
             "convenerPhoto": "https://drive.google.com/open?id=1efZRvY3hdYOdjz_0WwFaa6rLB-u39p3u",
             "dyConvenerName": "Alin Kansagra",
@@ -69,7 +69,7 @@
         {
             "id": 7,
             "name": "Cultural Committee",
-            "email": "cultural@daiict.ac.in",
+            "email": "cultural@dau.ac.in",
             "convenerName": "Ansh Garg",
             "convenerPhoto": "https://drive.google.com/open?id=1aEzzLkT9bLaBedyDtrZw00JPn8OClsH2",
             "dyConvenerName": "Kavan Patel",
@@ -80,7 +80,7 @@
         {
             "id": 8,
             "name": "IEEE",
-            "email": "ieee@daiict.ac.in",
+            "email": "ieee@dau.ac.in",
             "convenerName": "Rishi Shah",
             "convenerPhoto": "https://drive.google.com/open?id=1O_Z3eQbyK4LITCf6KiO3s5p6Jh7eahDa",
             "dyConvenerName": "Shrestha Thakkar",

@@ -1,9 +1,10 @@
 "use client"
 
-import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from 'next/image';
 import sbglogo from "@/data/sbglogo.png";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function HomePage() {
     return (

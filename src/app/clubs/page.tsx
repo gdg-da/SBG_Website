@@ -1,24 +1,24 @@
+// app/clubs/page.tsx
 "use client";
 
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import clubsData from "@/data/clubs.json";
 import { motion } from "framer-motion";
-import { 
-    FaCamera, 
-    FaTheaterMasks, 
-    FaFilm, 
-    FaBrain, 
-    FaPalette, 
-    FaMicroscope, 
-    FaCode, 
-    FaMicrochip, 
-    FaShieldAlt, 
-    FaLightbulb, 
-    FaBroadcastTower, 
-    FaComments, 
-    FaNewspaper, 
-    FaMusic, 
+import {
+    FaCamera,
+    FaTheaterMasks,
+    FaFilm,
+    FaBrain,
+    FaPalette,
+    FaMicroscope,
+    FaCode,
+    FaMicrochip,
+    FaShieldAlt,
+    FaLightbulb,
+    FaBroadcastTower,
+    FaComments,
+    FaNewspaper,
+    FaMusic,
     FaUserFriends,
     FaChessKnight,
     FaCube,
@@ -27,7 +27,7 @@ import {
 import { IoMdCode } from "react-icons/io";
 import Image from "next/image";
 import { IconType } from "react-icons";
-import { ComponentProps, JSX } from "react";
+import { ComponentProps, JSX, useEffect, useState } from "react";
 
 interface Club {
     id: number;
@@ -41,13 +41,8 @@ interface Club {
     description: string;
 }
 
-interface ClubsData {
-    clubs: Club[];
-}
-
 type IconComponent = IconType | ((props: ComponentProps<'div'>) => JSX.Element);
 
-// Map club names to icons
 const clubIcons: { [key: string]: IconComponent } = {
     "PMMC": FaCamera,
     "Daiict Theatres Group": FaTheaterMasks,
@@ -62,12 +57,12 @@ const clubIcons: { [key: string]: IconComponent } = {
     "Headrush": FaLightbulb,
     "DADC": (props: ComponentProps<'div'>) => (
         <div className="w-6 h-6" {...props}>
-            <Image 
-                src="/dance icon.png" 
-                alt="DADC Dance Icon" 
-                width={24} 
-                height={24} 
-                style={{ 
+            <Image
+                src="/dance icon.png"
+                alt="DADC Dance Icon"
+                width={24}
+                height={24}
+                style={{
                     objectFit: 'contain',
                     filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%)'
                 }}
@@ -85,12 +80,31 @@ const clubIcons: { [key: string]: IconComponent } = {
 };
 
 export default function ClubsPage() {
-    const { clubs } = clubsData as ClubsData;
-    clubs.sort((a, b) => a.name.localeCompare(b.name));
+    const [clubs, setClubs] = useState<Club[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchClubs = async () => {
+            try {
+                const response = await fetch('/api/clubs');
+                const data = await response.json();
+                setClubs(data);
+            } catch (error) {
+                console.error('Error fetching clubs:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchClubs();
+    }, []);
+
+    if (loading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-black via-blue-950 to-black">
-            {/* Hero Section */}
             <section className="relative py-20 px-4">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-emerald-500/20 z-0" />
                 <motion.div
@@ -108,11 +122,10 @@ export default function ClubsPage() {
                 </motion.div>
             </section>
 
-            {/* Clubs Grid */}
             <div className="max-w-7xl mx-auto px-4 pb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {clubs.map((club, index) => {
-                        const Icon = clubIcons[club.name] || FaCode; // Default to Code if no icon found
+                        const Icon = clubIcons[club.name] || FaCode;
                         return (
                             <motion.div
                                 key={club.id}

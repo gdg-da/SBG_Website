@@ -31,9 +31,9 @@ export function Sidebar() {
     const handleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            if (!result.user.email?.endsWith("@daiict.ac.in")) {
+            if (!result.user.email?.endsWith("@dau.ac.in")) {
                 await signOut(auth);
-                alert("Only @daiict.ac.in emails are allowed.");
+                alert("Only @dau.ac.in emails are allowed.");
             }
         } catch (error) {
             console.error("Login Error:", error);
