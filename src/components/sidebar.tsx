@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
-import { Home, Calendar, Users, PlusCircle, Award, Briefcase } from "lucide-react";
+import { Home, Calendar, Users, PlusCircle, Award, Briefcase, BookOpen } from "lucide-react";
 import { Menubar } from "@/components/ui/menubar";
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
@@ -84,6 +84,16 @@ export function Sidebar() {
                         : 'navlinks-inactive'
                     }`}>
                     <Award className="inline-block mr-2" size={20} />SBG
+                </Link>
+                <Link 
+                    href="/resources" 
+                    className={`navlinks flex items-center ${
+                        pathname === "/resources"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}
+                >
+                    <BookOpen className="inline-block mr-2" size={20} />Resources
                 </Link>
                 {user && user.email && isAuthorized && (
                     <Link href="/add-event" className={`navlinks flex items-center ${
