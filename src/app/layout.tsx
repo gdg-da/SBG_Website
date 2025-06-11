@@ -8,8 +8,8 @@ import type React from "react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-    title: "DAIICT Portal",
-    description: "Student Body Government Portal",
+    title: "DAU SBG Portal",
+    description: "Official website for DAU SBG Portal",
 }
 
 export default function RootLayout({ children, }: { children: React.ReactNode }) {
