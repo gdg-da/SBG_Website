@@ -27,9 +27,18 @@ export default function AddEvent() {
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (!user || !user.email || !isSBGUser(user.email)) {
+            if (!user || !user.email) {
                 router.push("/");
             } else {
+                if (user?.email) {
+                    fetch(`/api/check-user?email=${encodeURIComponent(user.email)}`)
+                    .then((res) => res.json())
+                    .then((data) => {
+                        if (!data.isAuthorized) {
+                            router.push("/");
+                        }
+                    });
+                }
                 setUser(user);
             }
         });

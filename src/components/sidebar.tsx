@@ -1,31 +1,28 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 import { Home, Calendar, Users, PlusCircle, Award, Briefcase } from "lucide-react";
 import { Menubar } from "@/components/ui/menubar";
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { isSBGUser, isGDGUser } from "@/lib/checkSBG";
 
 export function Sidebar() {
     const [user, setUser] = useState(auth.currentUser);
+    const pathname = usePathname();
+    const [isAuthorized, setIsAuthorized] = useState(false);
+    useEffect(() => {
+    if (user?.email) {
+        fetch(`/api/check-user?email=${encodeURIComponent(user.email)}`)
+        .then((res) => res.json())
+        .then((data) => setIsAuthorized(data.isAuthorized));
+    }
+    }, [user]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             setUser(user);
-        });
-
-        const elements = document.getElementsByClassName("navlinks");
-        [...elements].forEach((ele) => {
-            ele.addEventListener("click", () => {
-                [...elements].forEach((ele2) => {
-                    ele2.classList.remove("navlinks-active");
-                    ele2.classList.add("navlinks-inactive");
-                });
-                ele.classList.remove("navlinks-inactive");
-                ele.classList.add("navlinks-active");
-            });
         });
 
         return () => unsubscribe();
@@ -50,32 +47,59 @@ export function Sidebar() {
     return (
         <nav className="m-4 w-fit flex justify-between items-center">
             <Menubar className="pl-4 pr-4 flex gap-6 justify-around items-center">
-                <Link href="/" className="navlinks navlinks-active flex items-center">
-                    <Home className="inline-block mr-2" size={20} />Dashboard
+                <Link 
+                    href="/" 
+                    className={`navlinks flex items-center ${
+                        pathname === "/"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}
+                >
+                    <Home className="inline-block mr-2" size={20} />Home
                 </Link>
-                <Link href="/events" className="navlinks navlinks-inactive flex items-center">
+                <Link href="/events" className={`navlinks flex items-center ${
+                        pathname === "/events"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}>
                     <Calendar className="inline-block mr-2" size={20} />Events
                 </Link>
-                <Link href="/clubs" className="navlinks navlinks-inactive flex items-center">
+                <Link href="/clubs" className={`navlinks flex items-center ${
+                        pathname === "/clubs"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}>
                     <Users className="inline-block mr-2" size={20} />Clubs
                 </Link>
-                <Link href="/committees" className="navlinks navlinks-inactive flex items-center">
+                <Link href="/committees" className={`navlinks flex items-center ${
+                        pathname === "/committees"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}>
                     <Briefcase className="inline-block mr-2" size={20} />Committees
                 </Link>
-                <Link href="/sbg" className="navlinks navlinks-inactive flex items-center">
+                <Link href="/sbg" className={`navlinks flex items-center ${
+                        pathname === "/sbg"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}>
                     <Award className="inline-block mr-2" size={20} />SBG
                 </Link>
-                {user && user.email && (isSBGUser(user.email) || isGDGUser(user.email)) && (
-                    <Link href="/add-event" className="navlinks navlinks-inactive flex items-center">
+                {user && user.email && isAuthorized && (
+                    <Link href="/add-event" className={`navlinks flex items-center ${
+                        pathname === "/add-event"
+                        ? 'navlinks-active'
+                        : 'navlinks-inactive'
+                    }`}>
                         <PlusCircle className="inline-block mr-2" size={20} />Add Event
                     </Link>
                 )}
                 {user ? (
-                    <button onClick={handleLogout} className="navlinks navlinks-inactive flex items-center">
+                    <button onClick={handleLogout} className="navlinks flex items-center">
                         Logout ({user.displayName})
                     </button>
                 ) : (
-                    <button onClick={handleLogin} className="navlinks navlinks-inactive flex items-center">
+                    <button onClick={handleLogin} className="navlinks flex items-center">
                         Login
                     </button>
                 )}

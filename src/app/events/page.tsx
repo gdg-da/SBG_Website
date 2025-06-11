@@ -67,7 +67,7 @@ export default function EventsPage() {
             endDate: new Date(event.endDate), // Convert to Date
           }));
           setEvents(formattedEvents);
-        //   console.log("Events:", formattedEvents);
+          //   console.log("Events:", formattedEvents);
         } else {
           alert("Failed to load events");
         }
@@ -87,66 +87,63 @@ export default function EventsPage() {
     height: "100%",
     ...(theme === "dark"
       ? ({
-          "--cal-bg": "var(--background)",
-          "--cal-header-bg": "var(--card)",
-          "--cal-header-color": "var(--foreground)",
-          "--cal-cell-color": "var(--foreground)",
-          "--cal-border-color": "var(--border)",
-        } as React.CSSProperties)
+        "--cal-bg": "var(--background)",
+        "--cal-header-bg": "var(--card)",
+        "--cal-header-color": "var(--foreground)",
+        "--cal-cell-color": "var(--foreground)",
+        "--cal-border-color": "var(--border)",
+      } as React.CSSProperties)
       : {}),
   };
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Events Calendar</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Upcoming Events</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div style={{ height: "500px" }} className="calendar-container">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="startDate"
-              endAccessor="endDate"
-              style={calendarStyles}
-              components={{
-                event: EventComponent,
-              }}
-              eventPropGetter={(event: Event) => {
-                let backgroundColor = "#3174ad"; // Default
-                if (event.eventType === "exam") backgroundColor = "#d32f2f"; // Use eventType
-                if (event.eventType === "session") backgroundColor = "#388e3c";
-                return { style: { backgroundColor } };
-              }}
-              date={date}
-              onNavigate={handleNavigate}
-            />
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Event Legend</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex space-x-4">
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#3174ad] mr-2"></div>
-              <span>Club Events</span>
+      <h1 className="text-center text-3xl font-bold">Events Calendar</h1>
+      <div className="flex justify-center items-center">
+        <Card className="lg:max-w-[70vw] lg:min-w-[70vw]">
+          <CardHeader>
+            <CardTitle>Upcoming Events</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div style={{ height: "500px" }} className="calendar-container">
+              <Calendar
+                localizer={localizer}
+                events={events}
+                startAccessor="startDate"
+                endAccessor="endDate"
+                style={calendarStyles}
+                components={{
+                  event: EventComponent,
+                }}
+                eventPropGetter={(event: Event) => {
+                  let backgroundColor = "#3174ad"; // Default
+                  if (event.eventType === "exam") backgroundColor = "#d32f2f"; // Use eventType
+                  if (event.eventType === "session") backgroundColor = "#388e3c";
+                  return { style: { backgroundColor } };
+                }}
+                date={date}
+                onNavigate={handleNavigate}
+              />
             </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#d32f2f] mr-2"></div>
-              <span>Exams</span>
+
+            <h1 className="mt-4 mb-2 text-xl font-bold">Events Legend</h1>
+            <div className="flex space-x-4">
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#3174ad] mr-2"></div>
+                <span>Club Events</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#d32f2f] mr-2"></div>
+                <span>Exams</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-4 h-4 bg-[#388e3c] mr-2"></div>
+                <span>Sessions</span>
+              </div>
             </div>
-            <div className="flex items-center">
-              <div className="w-4 h-4 bg-[#388e3c] mr-2"></div>
-              <span>Sessions</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
