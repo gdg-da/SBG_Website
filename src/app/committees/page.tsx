@@ -18,6 +18,7 @@ import {
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { IconType } from "react-icons";
+import { Suspense } from "react";
 
 interface Committee {
     id: number;
@@ -47,7 +48,7 @@ const committeeIcons: { [key: string]: IconType } = {
     "IEEE Student Branch": FaMicrochip
 };
 
-export default function CommitteesPage() {
+function CommitteesContent() {
     const searchParams = useSearchParams();
     const committeeId = searchParams.get('id');
 
@@ -198,7 +199,7 @@ export default function CommitteesPage() {
                         Campus <span className="text-emerald-400">Committees</span>
                     </h1>
                     <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-                        Explore our dedicated committees that work tirelessly to enhance campus life, manage resources, and create opportunities for students.
+                        Explore the various committees that make our campus vibrant and functional.
                     </p>
                 </motion.div>
             </section>
@@ -207,7 +208,7 @@ export default function CommitteesPage() {
             <div className="max-w-7xl mx-auto px-4 pb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {committees.map((committee, index) => {
-                        const Icon = committeeIcons[committee.name] || FaMicrochip; // Default to Microchip if no icon found
+                        const Icon = committeeIcons[committee.name] || FaCalendarAlt;
                         return (
                             <motion.div
                                 key={committee.id}
@@ -216,33 +217,15 @@ export default function CommitteesPage() {
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                             >
                                 <Link href={`/committees?id=${committee.id}`}>
-                                    <Card className="bg-blue-900/30 border-blue-800 text-white hover:bg-blue-900/50 transition-all duration-300 h-full group">
-                                        <CardHeader className="flex flex-row items-center gap-4">
-                                            <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                                                <Icon className="w-6 h-6 text-emerald-400" />
+                                    <Card className="bg-blue-900/30 border-blue-800 text-white hover:bg-blue-900/50 transition-colors h-full">
+                                        <CardHeader>
+                                            <div className="flex items-center gap-3">
+                                                <Icon className="text-2xl text-emerald-400" />
+                                                <CardTitle className="text-xl">{committee.name}</CardTitle>
                                             </div>
-                                            <CardTitle className="text-xl">{committee.name}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <p className="text-gray-300 line-clamp-3">
-                                                {committee.description}
-                                            </p>
-                                            <div className="mt-4 flex items-center text-sm text-emerald-400">
-                                                <span>View Details</span>
-                                                <svg
-                                                    className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M9 5l7 7-7 7"
-                                                    />
-                                                </svg>
-                                            </div>
+                                            <p className="text-gray-400 line-clamp-3">{committee.description}</p>
                                         </CardContent>
                                     </Card>
                                 </Link>
@@ -252,5 +235,13 @@ export default function CommitteesPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function CommitteesPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <CommitteesContent />
+        </Suspense>
     );
 }
