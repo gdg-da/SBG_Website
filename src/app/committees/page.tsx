@@ -17,9 +17,26 @@ import {
 } from "react-icons/fa";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { IconType } from "react-icons";
+
+interface Committee {
+    id: number;
+    name: string;
+    description: string;
+    convenerName: string;
+    convenerPhoto: string;
+    dyConvenerName: string;
+    dyConvenerPhoto: string;
+    email: string;
+    committeeGroupPhoto: string;
+}
+
+interface CommitteesData {
+    committees: Committee[];
+}
 
 // Map committee names to icons
-const committeeIcons: { [key: string]: any } = {
+const committeeIcons: { [key: string]: IconType } = {
     "Annual Festival Committee": FaCalendarAlt,
     "Student Placement Cell": FaBriefcase,
     "Cafeteria Management Committee": FaUtensils,
@@ -27,7 +44,7 @@ const committeeIcons: { [key: string]: any } = {
     "TechSupport Committee": FaLaptopCode,
     "Sports Committee": FaRunning,
     "Cultural Committee": FaMusic,
-    "IEEE": FaMicrochip
+    "IEEE Student Branch": FaMicrochip
 };
 
 export default function CommitteesPage() {
@@ -38,7 +55,7 @@ export default function CommitteesPage() {
         return <div>Loading...</div>;
     }
 
-    const { committees } = committeesData;
+    const { committees } = committeesData as CommitteesData;
     committees.sort((a, b) => a.name.localeCompare(b.name));
 
     // If a committee ID is provided, show that committee's details
