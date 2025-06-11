@@ -65,6 +65,7 @@ export default function EventsPage() {
             endDate: new Date(event.endDate),
           }));
           setEvents(formattedEvents);
+        //   console.log("Events:", formattedEvents);
         } else {
           alert("Failed to load events");
         }
