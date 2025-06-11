@@ -22,16 +22,33 @@ import {
     FaUserFriends,
     FaChessKnight,
     FaCube,
-    FaGoogle,
-    FaInfinity,
-    FaUserTie
+    FaInfinity
 } from "react-icons/fa";
 import { IoMdCode } from "react-icons/io";
-import { DADCDanceIcon } from "@/components/icons";
 import Image from "next/image";
+import { IconType } from "react-icons";
+import { ComponentProps, JSX } from "react";
+
+interface Club {
+    id: number;
+    name: string;
+    email: string;
+    convenerName: string;
+    convernerPhoto: string;
+    dyConvenerName: string;
+    dyConvernerPhoto: string;
+    clubGroupPhoto: string;
+    description: string;
+}
+
+interface ClubsData {
+    clubs: Club[];
+}
+
+type IconComponent = IconType | ((props: ComponentProps<'div'>) => JSX.Element);
 
 // Map club names to icons
-const clubIcons: { [key: string]: any } = {
+const clubIcons: { [key: string]: IconComponent } = {
     "PMMC": FaCamera,
     "Daiict Theatres Group": FaTheaterMasks,
     "Film Club": FaFilm,
@@ -43,8 +60,8 @@ const clubIcons: { [key: string]: any } = {
     "Electronics Hobby Club": FaMicrochip,
     "Cyber Information and Network Security Club": FaShieldAlt,
     "Headrush": FaLightbulb,
-    "DADC": (props: any) => (
-        <div className="w-6 h-6">
+    "DADC": (props: ComponentProps<'div'>) => (
+        <div className="w-6 h-6" {...props}>
             <Image 
                 src="/dance icon.png" 
                 alt="DADC Dance Icon" 
@@ -53,8 +70,7 @@ const clubIcons: { [key: string]: any } = {
                 style={{ 
                     objectFit: 'contain',
                     filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%)'
-                }} 
-                {...props} 
+                }}
             />
         </div>
     ),
@@ -69,7 +85,7 @@ const clubIcons: { [key: string]: any } = {
 };
 
 export default function ClubsPage() {
-    const { clubs } = clubsData;
+    const { clubs } = clubsData as ClubsData;
     clubs.sort((a, b) => a.name.localeCompare(b.name));
 
     return (
