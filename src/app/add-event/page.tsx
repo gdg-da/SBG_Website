@@ -38,7 +38,7 @@ export default function AddEvent() {
     }, []);
 
     useEffect(() => {
-        if (user && user.email !== process.env.NEXT_PUBLIC_SBG_EMAIL) {
+        if (user && user.email !== process.env.SBG_EMAIL) {
             router.push("/");
         }
     }, [user, router]);
