@@ -10,9 +10,9 @@ interface Club {
     id: number;
     name: string;
     description: string;
-    convernerPhoto?: string;
+    convenerPhoto?: string;
     convenerName: string;
-    dyConvernerPhoto?: string;
+    dyconvenerPhoto?: string;
     dyConvenerName: string;
     email: string;
     clubGroupPhoto?: string;
@@ -96,11 +96,11 @@ export default function ClubPage() {
                 <CardContent>
                     <div className="flex flex-col gap-4">
                         <div className="flex items-center gap-4">
-                            {club.convernerPhoto && (<Image src={club.convernerPhoto} alt={club.convenerName} width={50} height={50} className="rounded-full" />)}
+                            {club.convenerPhoto && (<Image src={club.convenerPhoto} alt={club.convenerName} width={50} height={50} className="rounded-full" />)}
                             <p><strong>Convener:</strong> {club.convenerName}</p>
                         </div>
                         <div className="flex items-center gap-4">
-                            {club.dyConvernerPhoto && (<Image src={club.dyConvernerPhoto} alt={club.dyConvenerName} width={50} height={50} className="rounded-full" />)}
+                            {club.dyconvenerPhoto && (<Image src={club.dyconvenerPhoto} alt={club.dyConvenerName} width={50} height={50} className="rounded-full" />)}
                             <p><strong>Deputy Convener:</strong> {club.dyConvenerName}</p>
                         </div>
                     </div>

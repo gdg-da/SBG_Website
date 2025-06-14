@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { checkSBGAccess } from "@/lib/authUtils";
+import { auth } from "@/lib/firebaseConfig";
 import { toast } from "sonner";
 
 interface Club {
@@ -29,66 +29,70 @@ export default function EditClubPage() {
         name: "",
         email: "",
         convenerName: "",
-        convernerPhoto: "",
+        convenerPhoto: "",
         dyConvenerName: "",
-        dyConvernerPhoto: "",
+        dyConvenerPhoto: "",
         clubGroupPhoto: "",
         description: ""
     });
     const [loading, setLoading] = useState(true);
-    const [hasAccess, setHasAccess] = useState(false);
+    const [user, setUser] = useState(auth.currentUser);
+    const [authLoading, setAuthLoading] = useState(true);
 
     useEffect(() => {
-        const verifyAccess = async () => {
-            const access = await checkSBGAccess();
-            setHasAccess(access);
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+            setAuthLoading(false);
+        });
 
-            if (!access) {
-                router.push(`/clubs/${id}`);
-                return;
-            }
+        return () => unsubscribe();
+    }, []);
 
-            const fetchClub = async () => {
-                try {
-                    const response = await fetch('/api/clubs');
-                    if (!response.ok) {
-                        throw new Error('Failed to fetch clubs');
-                    }
+    useEffect(() => {
+        if (user && user.email !== process.env.SBG_EMAIL) {
+            router.push("/");
+        }
+    }, [user, router]);
 
-                    const clubs = await response.json();
-
-                    const foundClub = clubs.find((c: Club) => c.id.toString() === id);
-
-                    if (!foundClub) {
-                        throw new Error('Club not found');
-                        return;
-                    }
-
-                    setClub({
-                        name: foundClub.name,
-                        email: foundClub.email,
-                        convenerName: foundClub.convenerName,
-                        convernerPhoto: foundClub.convernerPhoto,
-                        dyConvenerName: foundClub.dyConvenerName,
-                        dyConvernerPhoto: foundClub.dyConvernerPhoto,
-                        clubGroupPhoto: foundClub.clubGroupPhoto,
-                        description: foundClub.description
-                    });
-                } catch (error) {
-                    console.error('Error fetching club:', error);
-                    toast.error('Failed to fetch club data');
-                } finally {
-                    setLoading(false);
+    useEffect(() => {
+        const fetchClub = async () => {
+            try {
+                const response = await fetch('/api/clubs');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch clubs');
                 }
-            };
 
-            if (id) {
-                fetchClub();
+                const clubs = await response.json();
+
+                const foundClub = clubs.find((c: Club) => c.id.toString() === id);
+
+                if (!foundClub) {
+                    throw new Error('Club not found');
+                    return;
+                }
+
+                setClub({
+                    name: foundClub.name,
+                    email: foundClub.email,
+                    convenerName: foundClub.convenerName,
+                    convenerPhoto: foundClub.convenerPhoto,
+                    dyConvenerName: foundClub.dyConvenerName,
+                    dyConvenerPhoto: foundClub.dyconvenerPhoto,
+                    clubGroupPhoto: foundClub.clubGroupPhoto,
+                    description: foundClub.description
+                });
+            } catch (error) {
+                console.error('Error fetching club:', error);
+                toast.error('Failed to fetch club data');
+            } finally {
+                setLoading(false);
             }
         };
 
-        verifyAccess();
-    }, [id, router]);
+        if (id) {
+            fetchClub();
+        }
+    }, [id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -98,8 +102,13 @@ export default function EditClubPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
+        if (!user || !user.email) {
+            toast.error('User not authenticated');
+            return;
+        }
+
         try {
-            const res = await fetch(`/api/clubs/${id}`, {
+            const res = await fetch(`/api/clubs/${id}?email=${encodeURIComponent(user.email)}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -111,7 +120,8 @@ export default function EditClubPage() {
                 toast.success('Club updated successfully');
                 router.push(`/clubs/${id}`);
             } else {
-                toast.error('Failed to update club');
+                const errorData = await res.json();
+                toast.error(errorData.message || 'Failed to update club');
             }
         } catch (error) {
             console.error('Error updating club:', error);
@@ -119,7 +129,7 @@ export default function EditClubPage() {
         }
     };
 
-    if (loading) {
+    if (authLoading || loading) {
         return (
             <div className="container mx-auto py-8">
                 <div className="animate-pulse">
@@ -137,7 +147,7 @@ export default function EditClubPage() {
         );
     }
 
-    if (!hasAccess) {
+    if (!user) {
         return null;
     }
 
@@ -180,8 +190,8 @@ export default function EditClubPage() {
                 <div>
                     <label className="block mb-1">Convener Photo URL</label>
                     <Input
-                        name="convernerPhoto"
-                        value={club.convernerPhoto}
+                        name="convenerPhoto"
+                        value={club.convenerPhoto}
                         onChange={handleChange}
                         required
                     />
@@ -200,8 +210,8 @@ export default function EditClubPage() {
                 <div>
                     <label className="block mb-1">Deputy Convener Photo URL</label>
                     <Input
-                        name="dyConvernerPhoto"
-                        value={club.dyConvernerPhoto}
+                        name="dyConvenerPhoto"
+                        value={club.dyConvenerPhoto}
                         onChange={handleChange}
                         required
                     />

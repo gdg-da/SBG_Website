@@ -12,9 +12,9 @@ interface Club {
     name: string;
     email: string;
     convenerName: string;
-    convernerPhoto: string;
+    convenerPhoto: string;
     dyConvenerName: string;
-    dyConvernerPhoto: string;
+    dyconvenerPhoto: string;
     clubGroupPhoto: string;
     description: string;
 }
