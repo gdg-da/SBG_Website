@@ -2,193 +2,68 @@
 
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import committeesData from "@/data/committees.json";
 import { motion } from "framer-motion";
-import { 
-    FaCalendarAlt,
-    FaBriefcase,
-    FaUtensils,
-    FaGraduationCap,
-    FaLaptopCode,
-    FaRunning,
-    FaMusic,
-    FaMicrochip,
-    FaArrowLeft
-} from "react-icons/fa";
+import { Users, FileText, Calendar, Trophy, Shield, Heart, Briefcase, GraduationCap, Megaphone, BookOpen, Star, Award, Building, School } from "lucide-react";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
-import { IconType } from "react-icons";
-import { Suspense } from "react";
+import { useEffect, useState } from "react";
 
 interface Committee {
     id: number;
     name: string;
-    description: string;
+    email: string;
     convenerName: string;
     convenerPhoto: string;
     dyConvenerName: string;
     dyConvenerPhoto: string;
-    email: string;
     committeeGroupPhoto: string;
+    description: string;
 }
 
-interface CommitteesData {
-    committees: Committee[];
-}
-
-// Map committee names to icons
-const committeeIcons: { [key: string]: IconType } = {
-    "Annual Festival Committee": FaCalendarAlt,
-    "Student Placement Cell": FaBriefcase,
-    "Cafeteria Management Committee": FaUtensils,
-    "Academic Committee": FaGraduationCap,
-    "TechSupport Committee": FaLaptopCode,
-    "Sports Committee": FaRunning,
-    "Cultural Committee": FaMusic,
-    "IEEE Student Branch": FaMicrochip
+const committeeIcons: Record<string, React.ElementType | ((props: React.SVGProps<SVGSVGElement> | React.ComponentProps<typeof Image>) => JSX.Element)> = {
+    "Academic Committee": BookOpen,
+    "Student Welfare Committee": Heart,
+    "Sports Committee": Trophy,
+    "Cultural Committee": Star,
+    "Discipline Committee": Shield,
+    "Anti-Ragging Committee": Users,
+    "Placement Committee": Briefcase,
+    "Alumni Committee": GraduationCap,
+    "Library Committee": FileText,
+    "Grievance Committee": Megaphone,
+    "Hostel Committee": Building,
+    "Event Management Committee": Calendar,
+    "Student Council": Award,
+    "Academic Affairs Committee": School
 };
 
-function CommitteesContent() {
-    const searchParams = useSearchParams();
-    const committeeId = searchParams.get('id');
+export default function CommitteesPage() {
+    const [committees, setCommittees] = useState<Committee[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    if (!committeesData || !committeesData.committees) {
-        return <div>Loading...</div>;
+    useEffect(() => {
+        const fetchCommittees = async () => {
+            try {
+                const response = await fetch('/api/committees');
+                const data = await response.json();
+                setCommittees(data);
+            } catch (error) {
+                console.error('Error fetching committees:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCommittees();
+    }, []);
+
+    if (loading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
 
-    const { committees } = committeesData as CommitteesData;
-    committees.sort((a, b) => a.name.localeCompare(b.name));
-
-    // If a committee ID is provided, show that committee's details
-    if (committeeId) {
-        const committee = committees.find(c => c.id.toString() === committeeId);
-        if (!committee) {
-            return <div>Committee not found</div>;
-        }
-
-        return (
-            <div className="min-h-screen bg-gradient-to-b from-black via-blue-950 to-black">
-                {/* Back Button */}
-                <div className="max-w-7xl mx-auto px-4 pt-20">
-                    <Link href="/committees" className="inline-flex items-center text-emerald-400 hover:text-emerald-300 transition-colors mb-8">
-                        <FaArrowLeft className="mr-2" /> Back to Committees
-                    </Link>
-                </div>
-
-                {/* Hero Section */}
-                <section className="relative py-20 px-4">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-emerald-500/20 z-0" />
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        className="max-w-7xl mx-auto relative z-10"
-                    >
-                        <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                            {committee.name}
-                        </h1>
-                        <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-                            {committee.description}
-                        </p>
-                    </motion.div>
-                </section>
-
-                {/* Committee Details */}
-                <div className="max-w-7xl mx-auto px-4 pb-20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {/* Convener */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            <Card className="bg-blue-900/30 border-blue-800 text-white">
-                                <CardHeader>
-                                    <CardTitle className="text-2xl text-emerald-400">Convener</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-4">
-                                        <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                                            <Image
-                                                src={committee.convenerPhoto}
-                                                alt={committee.convenerName}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-semibold">{committee.convenerName}</h3>
-                                            <p className="text-gray-400">{committee.email}</p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-
-                        {/* Deputy Convener */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                            <Card className="bg-blue-900/30 border-blue-800 text-white">
-                                <CardHeader>
-                                    <CardTitle className="text-2xl text-emerald-400">Deputy Convener</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-4">
-                                        <div className="relative w-20 h-20 rounded-full overflow-hidden">
-                                            <Image
-                                                src={committee.dyConvenerPhoto}
-                                                alt={committee.dyConvenerName}
-                                                fill
-                                                className="object-cover"
-                                            />
-                                        </div>
-                                        <div>
-                                            <h3 className="text-xl font-semibold">{committee.dyConvenerName}</h3>
-                                            <p className="text-gray-400">{committee.email}</p>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    </div>
-
-                    {/* Committee Group Photo */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="mt-8"
-                    >
-                        <Card className="bg-blue-900/30 border-blue-800 text-white">
-                            <CardHeader>
-                                <CardTitle className="text-2xl text-emerald-400">Committee Photo</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-                                    <Image
-                                        src={committee.committeeGroupPhoto}
-                                        alt={`${committee.name} Group Photo`}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                </div>
-            </div>
-        );
-    }
-
-    // If no committee ID is provided, show the committees list
     return (
-        <div className="min-h-screen bg-gradient-to-b from-black via-blue-950 to-black">
-            {/* Hero Section */}
+        <div className="min-h-screen bg-gradient-to-b from-black via-purple-950 to-black">
             <section className="relative py-20 px-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-emerald-500/20 z-0" />
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-900/20 to-pink-500/20 z-0" />
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -196,19 +71,18 @@ function CommitteesContent() {
                     className="max-w-7xl mx-auto relative z-10"
                 >
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                        Campus <span className="text-emerald-400">Committees</span>
+                        Campus <span className="text-pink-400">Committees</span>
                     </h1>
                     <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-                        Explore the various committees that make our campus vibrant and functional.
+                        Discover our various committees working tirelessly to enhance student life, maintain standards, and create a better campus environment for everyone.
                     </p>
                 </motion.div>
             </section>
 
-            {/* Committees Grid */}
             <div className="max-w-7xl mx-auto px-4 pb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {committees.map((committee, index) => {
-                        const Icon = committeeIcons[committee.name] || FaCalendarAlt;
+                        const Icon = committeeIcons[committee.name];
                         return (
                             <motion.div
                                 key={committee.id}
@@ -216,16 +90,36 @@ function CommitteesContent() {
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                             >
-                                <Link href={`/committees?id=${committee.id}`}>
-                                    <Card className="bg-blue-900/30 border-blue-800 text-white hover:bg-blue-900/50 transition-colors h-full">
-                                        <CardHeader>
-                                            <div className="flex items-center gap-3">
-                                                <Icon className="text-2xl text-emerald-400" />
-                                                <CardTitle className="text-xl">{committee.name}</CardTitle>
+                                <Link href={`/committees/${committee.id}`}>
+                                    <Card className="bg-purple-900/30 border-purple-800 text-white hover:bg-purple-900/50 transition-all duration-300 h-full group">
+                                        <CardHeader className="flex flex-row items-center gap-4">
+                                            <div className="p-2 bg-pink-500/10 rounded-lg group-hover:bg-pink-500/20 transition-colors">
+                                                {Icon ? (typeof Icon === "function" ? <Icon className="w-8 h-8 text-pink-400" /> : null) : (
+                                                    <span className="w-8 h-8 flex items-center justify-center bg-gray-700 rounded">?</span>
+                                                )}
                                             </div>
+                                            <CardTitle className="text-xl">{committee.name}</CardTitle>
                                         </CardHeader>
                                         <CardContent>
-                                            <p className="text-gray-400 line-clamp-3">{committee.description}</p>
+                                            <p className="text-gray-300 line-clamp-3">
+                                                {committee.description}
+                                            </p>
+                                            <div className="mt-4 flex items-center text-sm text-pink-400">
+                                                <span>View Details</span>
+                                                <svg
+                                                    className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M9 5l7 7-7 7"
+                                                    />
+                                                </svg>
+                                            </div>
                                         </CardContent>
                                     </Card>
                                 </Link>
@@ -235,13 +129,5 @@ function CommitteesContent() {
                 </div>
             </div>
         </div>
-    );
-}
-
-export default function CommitteesPage() {
-    return (
-        <Suspense fallback={<div>Loading...</div>}>
-            <CommitteesContent />
-        </Suspense>
     );
 }
