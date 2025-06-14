@@ -4,27 +4,19 @@
     "members": [
         {
             "position": "Convenor",
-            "representatives": [
-                { "name": "Parshv Joshi", "email": "convener_student_government@daiict.ac.in" }
-            ]
+            "representatives": { "name": "Parshv Joshi", "email": "convener_student_government@daiict.ac.in" }
         },
         {
             "position": "Deputy Convenor",
-            "representatives": [
-                { "name": "Pratham Lakhani", "email": "dy_convener_student_government@daiict.ac.in" }
-            ]
+            "representatives": { "name": "Pratham Lakhani", "email": "dy_convener_student_government@daiict.ac.in" }
         },
         {
             "position": "Treasurer",
-            "representatives": [
-                { "name": "Bhavya Boda", "email": "treasurer_student_government@daiict.ac.in" }
-            ]
+            "representatives": { "name": "Bhavya Boda", "email": "treasurer_student_government@daiict.ac.in" }
         },
         {
             "position": "Secretary",
-            "representatives": [
-                { "name": "Jayansh Gaadhe", "email": "secretary_student_government@daiict.ac.in" }
-            ]
+            "representatives": { "name": "Jayansh Gaadhe", "email": "secretary_student_government@daiict.ac.in" }
         }
     ]
 }

@@ -1,15 +1,14 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, type View } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { FuturisticDivider } from "@/components/futuristic-divider"
+import { ArrowLeft, ArrowRight, CalendarIcon, Filter, Plus, Search } from "lucide-react";
 import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
-import { Calendar as CalendarIcon, MapPin, Clock, Users } from "lucide-react";
 
 // Setup the localizer
 const localizer = momentLocalizer(moment);
@@ -36,20 +35,34 @@ interface Event {
 // Custom Event component
 const EventComponent = ({ event }: { event: Event }) => (
   <div className="p-2">
-    <strong className="text-sm font-semibold">{event.eventName}</strong>
-    <p className="text-xs text-gray-300">{event.location}</p>
+    <strong className="text-sm text-ellipsis font-semibold">{event.eventName}</strong>
+    <p className="text-xs">{event.location}</p>
   </div>
 );
 
 export default function EventsPage() {
   const { theme } = useTheme();
+  const [view, setView] = useState<View>("month")
   const [mounted, setMounted] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [date, setDate] = useState(new Date());
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredEvents = events.filter((event) => {
+    const matchesSearch =
+      event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.aboutEvent.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      event.eventType.toLowerCase().includes(searchTerm.toLowerCase())
+    return matchesSearch
+  })
 
   const handleNavigate = (newDate: Date) => {
     setDate(newDate);
   };
+
+  const handleViewChange = (newView: View) => {
+    setView(newView);
+  }
 
   // Fetch events on mount
   useEffect(() => {
@@ -65,7 +78,7 @@ export default function EventsPage() {
             endDate: new Date(event.endDate),
           }));
           setEvents(formattedEvents);
-          //   console.log("Events:", formattedEvents);
+            console.log("Events:", formattedEvents);
         } else {
           alert("Failed to load events");
         }
@@ -104,54 +117,224 @@ export default function EventsPage() {
       : {}),
   };
 
-  return (
-    <div className="space-y-6">
-      <h1 className="text-center text-3xl font-bold">Events Calendar</h1>
-      <div className="flex justify-center items-center">
-        <Card className="lg:max-w-[70vw] lg:min-w-[70vw]">
-          <CardHeader>
-            <CardTitle>Upcoming Events</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div style={{ height: "500px" }} className="calendar-container">
-              <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="startDate"
-                endAccessor="endDate"
-                style={calendarStyles}
-                components={{
-                  event: EventComponent,
-                }}
-                eventPropGetter={(event: Event) => {
-                  let backgroundColor = "#3174ad"; // Default
-                  if (event.eventType === "exam") backgroundColor = "#d32f2f"; // Use eventType
-                  if (event.eventType === "session") backgroundColor = "#388e3c";
-                  return { style: { backgroundColor } };
-                }}
-                date={date}
-                onNavigate={handleNavigate}
-              />
-            </div>
+  const eventStyleGetter = (event: Event) => {
+    let backgroundColor = "#FFBE3F"
+    let borderColor = "#FFBE3F"
 
-            <h1 className="mt-4 mb-2 text-xl font-bold">Events Legend</h1>
-            <div className="flex space-x-4">
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#3174ad] mr-2"></div>
-                <span>Club Events</span>
+    switch (event.eventType) {
+      case "exam":
+        backgroundColor = "#F4503B"
+        borderColor = "#F4503B"
+        break
+      case "workshop":
+        backgroundColor = "#FFBE3F"
+        borderColor = "#FFBE3F"
+        break
+      case "meeting":
+        backgroundColor = "#F4503B"
+        borderColor = "#F4503B"
+        break
+      case "orientation":
+        backgroundColor = "#FFBE3F"
+        borderColor = "#FFBE3F"
+        break
+      case "session":
+        backgroundColor = "#F4503B"
+        borderColor = "#F4503B"
+        break
+      case "awareness":
+        backgroundColor = "#FFBE3F"
+        borderColor = "#FFBE3F"
+        break
+      case "election":
+        backgroundColor = "#F4503B"
+        borderColor = "#F4503B"
+        break
+      case "fest":
+        backgroundColor = "#FFBE3F"
+        borderColor = "#FFBE3F"
+        break
+      default:
+        backgroundColor = "#F4503B"
+        borderColor = "#F4503B"
+    }
+
+    return {backgroundColor, borderColor}
+  }
+
+  const CustomToolbar = ({ label, onNavigate, onView }: any) => (
+    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onNavigate("PREV")}
+            className="rounded-full hover:bg-theme-gray-light"
+          >
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h2 className="text-xl font-bold">{label}</h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onNavigate("NEXT")}
+            className="rounded-full hover:bg-theme-gray-light"
+          >
+            <ArrowRight className="h-4 w-4" />
+          </Button>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onNavigate("TODAY")}
+          className="rounded-full border-theme-gray-light hover:bg-theme-gray-light"
+        >
+          Today
+        </Button>
+      </div>
+      <div className="flex items-center gap-2">
+        <Button
+          variant={view === "month" ? "default" : "ghost"}
+          size="sm"
+          onClick={() => onView("month")}
+          className="rounded-full"
+        >
+          Month
+        </Button>
+        <Button
+          variant={view === "week" ? "default" : "ghost"}
+          size="sm"
+          onClick={() => onView("week")}
+          className="rounded-full"
+        >
+          Week
+        </Button>
+        <Button
+          variant={view === "day" ? "default" : "ghost"}
+          size="sm"
+          onClick={() => onView("day")}
+          className="rounded-full"
+        >
+          Day
+        </Button>
+        <Button
+          variant={view === "agenda" ? "default" : "ghost"}
+          size="sm"
+          onClick={() => onView("agenda")}
+          className="rounded-full"
+        >
+          Agenda
+        </Button>
+      </div>
+    </div>
+  )
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-theme-black">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+          <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[200px] w-[200px] rounded-full bg-theme-red opacity-20 blur-[100px]"></div>
+          <div className="absolute bottom-0 right-0 -z-10 h-[200px] w-[200px] rounded-full bg-theme-yellow opacity-20 blur-[100px]"></div>
+        </div>
+
+        <div className="container relative z-10 px-4 py-16 md:px-6">
+          <div className="mx-auto max-w-4xl text-center">
+            <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 px-3 py-1 text-sm backdrop-blur-sm">
+              <CalendarIcon className="mr-2 h-4 w-4 text-theme-red" />
+              Events Calendar
+            </div>
+            <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+              <span className="bg-gradient-to-r from-white to-theme-gray-lighter bg-clip-text text-transparent">
+                Student
+              </span>{" "}
+              <span className="bg-gradient-to-r from-theme-red to-theme-yellow bg-clip-text text-transparent">
+                Events
+              </span>
+            </h1>
+            <p className="mt-4 text-xl text-muted-foreground">
+              Stay updated with all student government events, meetings, and activities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    {/* Main Content */}
+      <section className="container px-4 py-12 md:px-6">
+        <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray">
+        <div className="absolute inset-0 bg-gradient-to-br from-theme-red/20 to-theme-yellow/5 opacity-50" />
+        <div className="relative mx-auto max-w-7xl">
+          {/* Filters and Search */}
+          {/* <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-1 items-center gap-4"> */}
+              <div className="w-full flex justify-center items-center gap-6">
+              <p className="mt-6 text-xl text-muted-foreground">Search Events</p>
+                <div className="relative mt-6 max-w-md">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Search events..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 rounded-full border-theme-gray-light bg-theme-gray-light/30 focus-visible:ring-theme-red"
+                  />
+                </div>
               </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#d32f2f] mr-2"></div>
-                <span>Exams</span>
-              </div>
-              <div className="flex items-center">
-                <div className="w-4 h-4 bg-[#388e3c] mr-2"></div>
-                <span>Sessions</span>
+                {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-[180px] rounded-full border-theme-gray-light bg-theme-gray-light/30">
+                    <Filter className="mr-2 h-4 w-4" />
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent className="border-theme-gray-light bg-theme-black">
+                    <SelectItem value="all">All Categories</SelectItem>
+                    <SelectItem value="workshop">Workshop</SelectItem>
+                    <SelectItem value="forum">Forum</SelectItem>
+                    <SelectItem value="meeting">Meeting</SelectItem>
+                    <SelectItem value="orientation">Orientation</SelectItem>
+                    <SelectItem value="planning">Planning</SelectItem>
+                    <SelectItem value="awareness">Awareness</SelectItem>
+                    <SelectItem value="election">Election</SelectItem>
+                    <SelectItem value="fair">Fair</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div> */}
+
+          <FuturisticDivider className="my-4" />
+
+          {/* Calendar */}
+          <div className="pt-4 pb-4">
+            <Calendar
+              localizer={localizer}
+              events={filteredEvents}
+              startAccessor="startDate"
+              endAccessor="endDate"
+              style={{ height: 600 }}
+              view={view}
+              onView={handleViewChange}
+              components={{
+                event: EventComponent,
+                toolbar: CustomToolbar,
+              }}
+              date={date}
+              onNavigate={handleNavigate}
+              eventPropGetter={(event: Event) => {
+                return { style: eventStyleGetter(event) };
+              }}
+              // formats={{
+              //   monthHeaderFormat: "MMMM YYYY",
+              //   dayHeaderFormat: "dddd, MMMM DD",
+              //   dayRangeHeaderFormat: ({ start, end }) =>
+              //     `${moment(start).format("MMMM DD")} - ${moment(end).format("MMMM DD, YYYY")}`,
+              // }}
+            />
+          </div>
+        </div>
+        </div>
+      </section>
     </div>
   );
 }
