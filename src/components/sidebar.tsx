@@ -9,16 +9,9 @@ import { auth, googleProvider } from "@/lib/firebaseConfig";
 import { signInWithPopup, signOut } from "firebase/auth";
 
 export function Sidebar() {
-    const [user, setUser] = useState(auth.currentUser);
     const pathname = usePathname();
+    const [user, setUser] = useState(auth.currentUser);
     const [isAuthorized, setIsAuthorized] = useState(false);
-    useEffect(() => {
-    if (user?.email) {
-        fetch(`/api/check-user?email=${encodeURIComponent(user.email)}`)
-        .then((res) => res.json())
-        .then((data) => setIsAuthorized(data.isAuthorized));
-    }
-    }, [user]);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -27,6 +20,10 @@ export function Sidebar() {
 
         return () => unsubscribe();
     }, []);
+
+    useEffect(() => {
+        setIsAuthorized(user?.email === process.env.SBG_EMAIL);
+    }, [user?.email]);
 
     const handleLogin = async () => {
         try {
