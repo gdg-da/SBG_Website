@@ -25,3 +25,16 @@ export const logout = async () => {
         console.error("Logout Error:", error);
     }
 };
+
+export const getCurrentUserToken = async (): Promise<string | null> => {
+    try {
+        const user = auth.currentUser;
+        if (user) {
+            return await user.getIdToken();
+        }
+        return null;
+    } catch (error) {
+        console.error("Error getting user token:", error);
+        return null;
+    }
+};

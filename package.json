@@ -23,6 +23,7 @@
         "clsx": "^2.1.1",
         "dotenv": "^16.4.7",
         "firebase": "^10.8.0",
+        "firebase-admin": "^13.4.0",
         "framer-motion": "^11.0.8",
         "lucide-react": "^0.344.0",
         "moment": "^2.30.1",

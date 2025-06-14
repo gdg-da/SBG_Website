@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/lib/firebaseConfig";
+import { getCurrentUserToken } from "@/lib/auth";
 import { toast } from "sonner";
 
 interface Club {
@@ -14,9 +15,9 @@ interface Club {
     name: string;
     email: string;
     convenerName: string;
-    convernerPhoto: string;
+    convenerPhoto: string;
     dyConvenerName: string;
-    dyConvernerPhoto: string;
+    dyConvenerPhoto: string;
     clubGroupPhoto: string;
     description: string;
 }
@@ -77,7 +78,7 @@ export default function EditClubPage() {
                     convenerName: foundClub.convenerName,
                     convenerPhoto: foundClub.convenerPhoto,
                     dyConvenerName: foundClub.dyConvenerName,
-                    dyConvenerPhoto: foundClub.dyconvenerPhoto,
+                    dyConvenerPhoto: foundClub.dyConvenerPhoto,
                     clubGroupPhoto: foundClub.clubGroupPhoto,
                     description: foundClub.description
                 });
@@ -102,18 +103,27 @@ export default function EditClubPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (!user || !user.email) {
+        if (!user) {
             toast.error('User not authenticated');
             return;
         }
 
         try {
-            const res = await fetch(`/api/clubs/${id}?email=${encodeURIComponent(user.email)}`, {
+            const idToken = await getCurrentUserToken();
+            if (!idToken) {
+                toast.error('Failed to get authentication token');
+                return;
+            }
+
+            const res = await fetch(`/api/clubs/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(club),
+                body: JSON.stringify({
+                    ...club,
+                    idToken
+                }),
             });
 
             if (res.ok) {

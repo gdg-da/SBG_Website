@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from '@/lib/mongodb';
+import { verifyFirebaseToken, isAuthorizedUser } from '@/lib/firebaseAdmin';
 import Club from '@/models/Club';
 
 export async function GET({ params }: { params: { id: string } }) {
@@ -18,19 +19,29 @@ export async function GET({ params }: { params: { id: string } }) {
 }
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-    const { searchParams } = new URL(request.url);
-    const email = searchParams.get('email');
-    const isSBG = email === process.env.SBG_EMAIL;
-
-    if (!isSBG) {
-        return NextResponse.json({ message: 'Unauthorized: Only SBG can update clubs' }, { status: 403 });
-    }
-
     try {
+        const body = await request.json();
+        const { idToken, ...clubData } = body;
+
+        if (!idToken) {
+            return NextResponse.json({ message: 'Authentication token required' }, { status: 401 });
+        }
+
+        let decodedToken;
+
+        try {
+            decodedToken = await verifyFirebaseToken(idToken);
+        } catch {
+            return NextResponse.json({ message: 'Invalid authentication token' }, { status: 401 });
+        }
+
+        if (!isAuthorizedUser(decodedToken.email)) {
+            return NextResponse.json({ message: 'Unauthorized: Only SBG can update clubs' }, { status: 403 });
+        }
+
         await connectDB();
 
-        const body = await request.json();
-        const updatedClub = await Club.findOneAndUpdate({ id: params.id }, body, { new: true });
+        const updatedClub = await Club.findOneAndUpdate({ id: params.id }, clubData, { new: true });
 
         if (!updatedClub) {
             return NextResponse.json({ message: 'Club not found' }, { status: 404 });
@@ -38,6 +49,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
         return NextResponse.json(updatedClub);
     } catch (error) {
-        return NextResponse.json({ message: 'Error updating club', error }, { status: 500 });
+        return NextResponse.json({ message: 'Error updating club', error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
     }
 }

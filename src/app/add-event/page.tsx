@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseConfig";
+import { getCurrentUserToken } from "@/lib/auth";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { toast } from "sonner";
 
 export default function AddEvent() {
     const [eventName, setEventName] = useState("");
@@ -22,49 +24,76 @@ export default function AddEvent() {
     const [hostEmail, setHostEmail] = useState("");
     const [eventPictures, setEventPictures] = useState("");
     const [user, setUser] = useState(auth.currentUser);
+    const [authLoading, setAuthLoading] = useState(true);
+    const [submitting, setSubmitting] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
-            if (!user || !user.email) {
-                router.push("/");
-            } else {
-                if (user?.email) {
-                    fetch(`/api/check-user?email=${encodeURIComponent(user.email)}`)
-                    .then((res) => res.json())
-                    .then((data) => {
-                        if (!data.isAuthorized) {
-                            router.push("/");
-                        }
-                    });
-                }
-                setUser(user);
-            }
+            setUser(user);
+            setAuthLoading(false);
         });
 
         return () => unsubscribe();
-    }, [router]);
+    }, []);
 
-    if (!user) return <p>Loading...</p>;
+    useEffect(() => {
+        if (user && user.email !== process.env.NEXT_PUBLIC_SBG_EMAIL) {
+            router.push("/");
+        }
+    }, [user, router]);
+
+    if (authLoading) {
+        return (
+            <div className="container mx-auto py-8">
+                <div className="animate-pulse">
+                    <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+                    <div className="space-y-4">
+                        <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                        <div className="h-4 bg-gray-200 rounded w-1/6"></div>
+                        <div className="h-10 bg-gray-200 rounded"></div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmitting(true);
 
-        const eventData = {
-            eventName,
-            startDate,
-            endDate,
-            hostedBy,
-            aboutEvent,
-            bannerUrl,
-            eventType,
-            location,
-            website: website || null,
-            hostEmail,
-            eventPictures,
-        };
+        if (!user) {
+            toast.error("User not authenticated");
+            setSubmitting(false);
+            return;
+        }
 
         try {
+            const idToken = await getCurrentUserToken();
+            if (!idToken) {
+                toast.error('Failed to get authentication token');
+                setSubmitting(false);
+                return;
+            }
+
+            const eventData = {
+                idToken,
+                eventName,
+                startDate,
+                endDate,
+                hostedBy,
+                aboutEvent,
+                bannerUrl,
+                eventType,
+                location,
+                website: website || null,
+                hostEmail,
+                eventPictures,
+            };
+
             const response = await fetch("/api/events", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -72,7 +101,7 @@ export default function AddEvent() {
             });
 
             if (response.ok) {
-                alert("Event added successfully!");
+                toast.success("Event added successfully!");
                 setEventName("");
                 setStartDate("");
                 setEndDate("");
@@ -85,12 +114,20 @@ export default function AddEvent() {
                 setHostEmail("");
                 setEventPictures("");
             } else {
-                alert("Failed to add event");
+                const errorData = await response.json();
+                toast.error(errorData.message || "Failed to add event");
             }
         } catch (error) {
             console.error("Error submitting form:", error);
+            toast.error("Error submitting form");
+        } finally {
+            setSubmitting(false);
         }
     };
+
+    if (!user) {
+        return null;
+    }
 
     return (
         <div className="max-w-2xl mx-auto">
@@ -131,8 +168,9 @@ export default function AddEvent() {
                                 value={eventType}
                                 onChange={(e) => setEventType(e.target.value)}
                                 required
-                                className="border rounded p-2 w-full" // Adjust styling as needed
+                                className="border rounded p-2 w-full"
                             >
+                                <option value="">Select Event Type</option>
                                 <option value="event">Event</option>
                                 <option value="exam">Exam</option>
                                 <option value="session">Session</option>
@@ -154,7 +192,9 @@ export default function AddEvent() {
                             <Label htmlFor="eventPictures">Event Pictures (Optional) (Google Drive Folder Link)</Label>
                             <Input id="eventPictures" type="url" value={eventPictures} onChange={(e) => setEventPictures(e.target.value)} placeholder="https://drive.google.com/folderview?id=..." />
                         </div>
-                        <Button type="submit" className="w-full">Add Event</Button>
+                        <Button type="submit" className="w-full" disabled={submitting}>
+                            {submitting ? "Adding Event..." : "Add Event"}
+                        </Button>
                     </form>
                 </CardContent>
             </Card>

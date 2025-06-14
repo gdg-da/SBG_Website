@@ -14,7 +14,7 @@ interface Club {
     convenerName: string;
     convenerPhoto: string;
     dyConvenerName: string;
-    dyconvenerPhoto: string;
+    dyConvenerPhoto: string;
     clubGroupPhoto: string;
     description: string;
 }

@@ -12,7 +12,7 @@ interface Club {
     description: string;
     convenerPhoto?: string;
     convenerName: string;
-    dyconvenerPhoto?: string;
+    dyConvenerPhoto?: string;
     dyConvenerName: string;
     email: string;
     clubGroupPhoto?: string;
@@ -100,7 +100,7 @@ export default function ClubPage() {
                             <p><strong>Convener:</strong> {club.convenerName}</p>
                         </div>
                         <div className="flex items-center gap-4">
-                            {club.dyconvenerPhoto && (<Image src={club.dyconvenerPhoto} alt={club.dyConvenerName} width={50} height={50} className="rounded-full" />)}
+                            {club.dyConvenerPhoto && (<Image src={club.dyConvenerPhoto} alt={club.dyConvenerName} width={50} height={50} className="rounded-full" />)}
                             <p><strong>Deputy Convener:</strong> {club.dyConvenerName}</p>
                         </div>
                     </div>

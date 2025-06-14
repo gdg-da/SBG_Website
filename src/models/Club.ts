@@ -7,7 +7,7 @@ export interface IClub extends Document {
     convenerName: string;
     convenerPhoto: string;
     dyConvenerName: string;
-    dyconvenerPhoto: string;
+    dyConvenerPhoto: string;
     clubGroupPhoto: string;
     description: string;
     createdAt: Date;
@@ -21,7 +21,7 @@ const ClubSchema = new Schema<IClub>({
     convenerName: { type: String, required: true },
     convenerPhoto: { type: String, required: true },
     dyConvenerName: { type: String, required: true },
-    dyconvenerPhoto: { type: String, required: true },
+    dyConvenerPhoto: { type: String, required: true },
     clubGroupPhoto: { type: String, required: true },
     description: { type: String, required: true }
 }, {
