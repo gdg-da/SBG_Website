@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    /* config options here */
-    env:{
+    env: {
         FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,
         FIREBASE_AUTH_DOMAIN: process.env.FIREBASE_AUTH_DOMAIN,
         FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
@@ -12,13 +11,19 @@ const nextConfig: NextConfig = {
         FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
         MONGO_URI: process.env.MONGO_URI,
         SBG_EMAIL: process.env.SBG_EMAIL,
-        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+        API_URL: process.env.API_URL,
     },
     images: {
-        domains: [
-            'firebasestorage.googleapis.com',
-            'drive.google.com'
-        ],
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'firebasestorage.googleapis.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'drive.google.com',
+            }
+        ]
     },
 };
 

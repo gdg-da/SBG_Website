@@ -6,7 +6,7 @@ import { Menubar } from "@/components/ui/menubar";
 import { useEffect, useState } from "react";
 import { auth, googleProvider } from "@/lib/firebaseConfig";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { isSBGUser, isGDGUser } from "@/lib/checkSBG";
+import { isSBGUser } from "@/lib/checkSBG";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
@@ -51,7 +51,7 @@ export function Navbar() {
     };
 
     return (
-        <motion.nav 
+        <motion.nav
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -60,74 +60,67 @@ export function Navbar() {
             <div className="max-w-7xl mx-auto px-4">
                 <Menubar className="h-16 bg-transparent border-none flex items-center justify-between">
                     <div className="flex items-center space-x-8">
-                        <Link 
-                            href="/" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/"
+                            className={`flex items-center transition-colors ${isActive("/")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <Home className="inline-block mr-2" size={20} />Home
                         </Link>
-                        <Link 
-                            href="/dashboard" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/dashboard") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/dashboard"
+                            className={`flex items-center transition-colors ${isActive("/dashboard")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <LayoutDashboard className="inline-block mr-2" size={20} />Dashboard
                         </Link>
-                        <Link 
-                            href="/events" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/events") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/events"
+                            className={`flex items-center transition-colors ${isActive("/events")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <Calendar className="inline-block mr-2" size={20} />Events
                         </Link>
-                        <Link 
-                            href="/clubs" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/clubs") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/clubs"
+                            className={`flex items-center transition-colors ${isActive("/clubs")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <Users className="inline-block mr-2" size={20} />Clubs
                         </Link>
-                        <Link 
-                            href="/committees" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/committees") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/committees"
+                            className={`flex items-center transition-colors ${isActive("/committees")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <Users2 className="inline-block mr-2" size={20} />Committees
                         </Link>
-                        <Link 
-                            href="/sbg" 
-                            className={`flex items-center transition-colors ${
-                                isActive("/sbg") 
-                                    ? "text-white" 
-                                    : "text-gray-400 hover:text-emerald-400"
-                            }`}
+                        <Link
+                            href="/sbg"
+                            className={`flex items-center transition-colors ${isActive("/sbg")
+                                ? "text-white"
+                                : "text-gray-400 hover:text-emerald-400"
+                                }`}
                         >
                             <Award className="inline-block mr-2" size={20} />SBG
                         </Link>
-                        {user && user.email && (isSBGUser(user.email) || isGDGUser(user.email)) && (
-                            <Link 
-                                href="/add-event" 
-                                className={`flex items-center transition-colors ${
-                                    isActive("/add-event") 
-                                        ? "text-white" 
-                                        : "text-gray-400 hover:text-emerald-400"
-                                }`}
+                        {user && user.email && (isSBGUser(user.email)) && (
+                            <Link
+                                href="/add-event"
+                                className={`flex items-center transition-colors ${isActive("/add-event")
+                                    ? "text-white"
+                                    : "text-gray-400 hover:text-emerald-400"
+                                    }`}
                             >
                                 <PlusCircle className="inline-block mr-2" size={20} />Add Event
                             </Link>
@@ -140,16 +133,16 @@ export function Navbar() {
                         className="flex items-center"
                     >
                         {user ? (
-                            <motion.button 
-                                onClick={handleLogout} 
+                            <motion.button
+                                onClick={handleLogout}
                                 className="px-4 py-2 rounded-lg bg-blue-900/50 text-white hover:bg-blue-800/50 transition-colors flex items-center"
                             >
                                 <span className="mr-2">Logout</span>
                                 <span className="text-emerald-400">({user.displayName})</span>
                             </motion.button>
                         ) : (
-                            <motion.button 
-                                onClick={handleLogin} 
+                            <motion.button
+                                onClick={handleLogin}
                                 className="px-4 py-2 rounded-lg bg-emerald-500 text-white hover:bg-emerald-600 transition-colors"
                             >
                                 Login

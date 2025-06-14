@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation";
 import { auth } from "@/lib/firebaseConfig";
-import { isSBGUser } from "@/lib/checkSBG";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"

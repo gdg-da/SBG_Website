@@ -1,33 +1,11 @@
-// app/clubs/page.tsx
 "use client";
 
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import {
-    FaCamera,
-    FaTheaterMasks,
-    FaFilm,
-    FaBrain,
-    FaPalette,
-    FaMicroscope,
-    FaCode,
-    FaMicrochip,
-    FaShieldAlt,
-    FaLightbulb,
-    FaBroadcastTower,
-    FaComments,
-    FaNewspaper,
-    FaMusic,
-    FaUserFriends,
-    FaChessKnight,
-    FaCube,
-    FaInfinity
-} from "react-icons/fa";
-import { IoMdCode } from "react-icons/io";
+import { Camera, Drama, Popcorn, BrainCircuit, Code, Palette, Microscope, Infinity, Cpu, ShieldHalf, Lightbulb, Radio, MessageCircleCode, Swords, Newspaper, Puzzle, Music, Sparkles, Rocket } from "lucide-react";
 import Image from "next/image";
-import { IconType } from "react-icons";
-import { ComponentProps, JSX, useEffect, useState } from "react";
+import { ComponentProps, useEffect, useState } from "react";
 
 interface Club {
     id: number;
@@ -41,42 +19,27 @@ interface Club {
     description: string;
 }
 
-type IconComponent = IconType | ((props: ComponentProps<'div'>) => JSX.Element);
-
-const clubIcons: { [key: string]: IconComponent } = {
-    "PMMC": FaCamera,
-    "Daiict Theatres Group": FaTheaterMasks,
-    "Film Club": FaFilm,
-    "AI Club": FaBrain,
-    "Microsoft Student Technical Club": FaCode,
-    "Muse- The Designing Club": FaPalette,
-    "Research Club": FaMicroscope,
-    "Programming Club": FaInfinity,
-    "Electronics Hobby Club": FaMicrochip,
-    "Cyber Information and Network Security Club": FaShieldAlt,
-    "Headrush": FaLightbulb,
-    "DADC": (props: ComponentProps<'div'>) => (
-        <div className="w-6 h-6" {...props}>
-            <Image
-                src="/dance icon.png"
-                alt="DADC Dance Icon"
-                width={24}
-                height={24}
-                style={{
-                    objectFit: 'contain',
-                    filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%)'
-                }}
-            />
-        </div>
-    ),
-    "The Radio Club": FaBroadcastTower,
-    "The Debating Society": FaComments,
-    "Chess Club": FaChessKnight,
-    "Press Club": FaNewspaper,
-    "Cubing Club": FaCube,
-    "The Music Club": FaMusic,
-    "Khelaiya Club": FaUserFriends,
-    "Google Developer Group": IoMdCode
+const clubIcons: Record<string, React.ElementType | ((props: React.SVGProps<SVGSVGElement> | React.ComponentProps<typeof Image>) => JSX.Element)> = {
+    "PMMC": Camera,
+    "Daiict Theatres Group": Drama,
+    "Film Club": Popcorn,
+    "AI Club": BrainCircuit,
+    "Microsoft Student Technical Club": Code,
+    "Muse- The Designing Club": Palette,
+    "Research Club": Microscope,
+    "Programming Club": Infinity,
+    "Electronics Hobby Club": Cpu,
+    "Cyber Information and Network Security Club": ShieldHalf,
+    "Headrush": Lightbulb,
+    "DADC": (props: ComponentProps<'div'>) => (<div className="w-6 h-6" {...props}><Image src="/dance icon.png" alt="DADC Dance Icon" width={24} height={24} style={{ objectFit: 'contain', filter: 'invert(48%) sepia(79%) saturate(2476%) hue-rotate(118deg) brightness(118%) contrast(119%)' }} /></div>),
+    "The Radio Club": Radio,
+    "The Debating Society": MessageCircleCode,
+    "Chess Club": Swords,
+    "Press Club": Newspaper,
+    "Cubing Club": Puzzle,
+    "The Music Club": Music,
+    "Khelaiya Club": Sparkles,
+    "Google Developer Group": Rocket
 };
 
 export default function ClubsPage() {
@@ -125,7 +88,7 @@ export default function ClubsPage() {
             <div className="max-w-7xl mx-auto px-4 pb-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {clubs.map((club, index) => {
-                        const Icon = clubIcons[club.name] || FaCode;
+                        const Icon = clubIcons[club.name];
                         return (
                             <motion.div
                                 key={club.id}
@@ -137,7 +100,9 @@ export default function ClubsPage() {
                                     <Card className="bg-blue-900/30 border-blue-800 text-white hover:bg-blue-900/50 transition-all duration-300 h-full group">
                                         <CardHeader className="flex flex-row items-center gap-4">
                                             <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                                                <Icon className="w-6 h-6 text-emerald-400" />
+                                                {Icon ? (typeof Icon === "function" ? <Icon className="w-8 h-8 text-emerald-400" /> : null) : (
+                                                    <span className="w-8 h-8 flex items-center justify-center bg-gray-700 rounded">?</span>
+                                                )}
                                             </div>
                                             <CardTitle className="text-xl">{club.name}</CardTitle>
                                         </CardHeader>
