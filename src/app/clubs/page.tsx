@@ -1,11 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { Camera, Drama, Popcorn, BrainCircuit, Code, Palette, Microscope, Infinity, Cpu, ShieldHalf, Lightbulb, Radio, MessageCircleCode, Swords, Newspaper, Puzzle, Music, Sparkles, Rocket } from "lucide-react";
+import { Search, Camera, Drama, Popcorn, BrainCircuit, Code, Palette, Microscope, Infinity, Cpu, ShieldHalf, Lightbulb, Radio, MessageCircleCode, Swords, Newspaper, Puzzle, Music, Sparkles, Rocket } from "lucide-react";
 import Image from "next/image";
 import { ComponentProps, useEffect, useState } from "react";
+import { Users } from "lucide-react";
+import { ClubCard } from "@/components/club-committee/club-card";
+// import { ClubModal } from "@/components/club-committee/club-modal";
+import { FuturisticDivider } from "@/components/futuristic-divider";
+import { Input } from "@/components/ui/input";
 
 interface Club {
     id: number;
@@ -43,8 +46,25 @@ const clubIcons: Record<string, React.ElementType | ((props: React.SVGProps<SVGS
 };
 
 export default function ClubsPage() {
+    // const [selectedClub, setSelectedClub] = useState<Club>();
     const [clubs, setClubs] = useState<Club[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
+    // const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const filteredClubs = clubs.filter((club) => {
+        const matchesSearch =
+        club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        club.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        club.convenerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        club.dyConvenerName.toLowerCase().includes(searchTerm.toLowerCase())
+        return matchesSearch
+    })
+
+    // const handleClubClick = (club: Club) => {
+    //     setSelectedClub(club)
+    //     setIsModalOpen(true)
+    // }
 
     useEffect(() => {
         const fetchClubs = async () => {
@@ -67,73 +87,116 @@ export default function ClubsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-black via-blue-950 to-black">
-            <section className="relative py-20 px-4">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-emerald-500/20 z-0" />
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="max-w-7xl mx-auto relative z-10"
-                >
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                        Campus <span className="text-emerald-400">Clubs</span>
+        <div className="min-h-screen bg-background">
+            {/* Hero Section */}
+            <section className="relative overflow-hidden bg-theme-black">
+                <div className="absolute inset-0 z-0">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+                <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[200px] w-[200px] rounded-full bg-theme-yellow opacity-20 blur-[100px]"></div>
+                <div className="absolute bottom-0 left-0 -z-10 h-[200px] w-[200px] rounded-full bg-theme-red opacity-20 blur-[100px]"></div>
+                </div>
+
+                <div className="container relative z-10 px-4 py-16 md:px-6">
+                <div className="mx-auto max-w-4xl text-center">
+                    <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 px-3 py-1 text-sm backdrop-blur-sm">
+                    <Users className="mr-2 h-4 w-4 text-theme-yellow" />
+                    Student Organizations
+                    </div>
+                    <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+                    <span className="bg-gradient-to-r from-white to-theme-gray-lighter bg-clip-text text-transparent">
+                        Student
+                    </span>{" "}
+                    <span className="bg-gradient-to-r from-theme-yellow to-theme-red bg-clip-text text-transparent">
+                        Clubs
+                    </span>
                     </h1>
-                    <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-                        Discover and join our diverse range of clubs, each offering unique opportunities to learn, create, and connect with like-minded individuals.
+                    <p className="mt-4 text-xl text-muted-foreground">
+                    Discover and join our diverse range of clubs, each offering unique opportunities to learn, create, and connect with like-minded individuals.
                     </p>
-                </motion.div>
+                    <div className="mt-6 flex flex-wrap justify-center gap-4">
+                    <div className="flex items-center gap-2 text-sm">
+                        <div className="h-3 w-3 rounded-full bg-theme-red"></div>
+                        <span>{clubs.length} Active Clubs</span>
+                    </div>
+                    </div>
+                </div>
+                </div>
             </section>
 
-            <div className="max-w-7xl mx-auto px-4 pb-20">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {clubs.map((club, index) => {
-                        const Icon = clubIcons[club.name];
-                        return (
-                            <motion.div
-                                key={club.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                            >
-                                <Link href={`/clubs/${club.id}`}>
-                                    <Card className="bg-blue-900/30 border-blue-800 text-white hover:bg-blue-900/50 transition-all duration-300 h-full group">
-                                        <CardHeader className="flex flex-row items-center gap-4">
-                                            <div className="p-2 bg-emerald-500/10 rounded-lg group-hover:bg-emerald-500/20 transition-colors">
-                                                {Icon ? (typeof Icon === "function" ? <Icon className="w-8 h-8 text-emerald-400" /> : null) : (
-                                                    <span className="w-8 h-8 flex items-center justify-center bg-gray-700 rounded">?</span>
-                                                )}
-                                            </div>
-                                            <CardTitle className="text-xl">{club.name}</CardTitle>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <p className="text-gray-300 line-clamp-3">
-                                                {club.description}
-                                            </p>
-                                            <div className="mt-4 flex items-center text-sm text-emerald-400">
-                                                <span>View Details</span>
-                                                <svg
-                                                    className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M9 5l7 7-7 7"
-                                                    />
-                                                </svg>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                </Link>
-                            </motion.div>
-                        );
-                    })}
+            {/* Main Content */}
+      <section className="container px-4 py-12 md:px-6">
+        <div className="mx-auto max-w-7xl">
+          {/* Filters and Search */}
+          <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-1 items-center gap-4">
+                <p className="text-xl mr-4 text-muted-foreground">Search Clubs</p>
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Search clubs..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 rounded-full border-theme-gray-light bg-theme-gray-light/30 focus-visible:ring-theme-red"
+                  />
                 </div>
+                {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="w-[180px] rounded-full border-theme-gray-light bg-theme-gray-light/30">
+                    <Filter className="mr-2 h-4 w-4" />
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent className="border-theme-gray-light bg-theme-black">
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category === "all" ? "All Categories" : category.charAt(0).toUpperCase() + category.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select> */}
+              </div>
             </div>
+            {/* <div className="flex flex-wrap gap-2">
+              {Array.from(new Set(clubs.map((club) => club.category))).map((category) => (
+                <div key={category} className="flex items-center gap-2 text-sm">
+                  <div
+                    className={`h-3 w-3 rounded-full ${
+                      category === "Technology" || category === "Academic"
+                        ? "bg-theme-red"
+                        : category === "Arts" || category === "Cultural"
+                          ? "bg-theme-yellow"
+                          : "bg-theme-gray-lighter"
+                    }`}
+                  ></div>
+                  <span>{category}</span>
+                </div>
+              ))}
+            </div> */}
+          </div>
+
+        <FuturisticDivider className="my-4" />
+
+          {/* Clubs Grid */}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {filteredClubs.map((club) => (
+            //   <ClubCard key={club.id} club={club} onClick={() => handleClubClick(club)} />
+                <Link key={club.id} href={`/clubs/${club.id}`}><ClubCard key={club.id} club={club}/></Link>
+            ))}
+          </div>
+
+          {filteredClubs.length === 0 && (
+            <div className="py-12 text-center">
+              <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-theme-gray-light/30 flex items-center justify-center">
+                <Users className="h-12 w-12 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold">No clubs found</h3>
+              <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Club Modal */}
+      {/* <ClubModal club={selectedClub} isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} /> */}
         </div>
     );
 }

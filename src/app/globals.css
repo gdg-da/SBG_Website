@@ -3,134 +3,302 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 222.2 84% 4.9%;
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 11 90% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 39 100% 62%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 11 90% 59%;
+    --radius: 1rem;
+  }
 
-        --card: 0 0% 100%;
-        --card-foreground: 222.2 84% 4.9%;
-
-        --popover: 0 0% 100%;
-        --popover-foreground: 222.2 84% 4.9%;
-
-        --primary: 222.2 47.4% 11.2%;
-        --primary-foreground: 210 40% 98%;
-
-        --secondary: 210 40% 96.1%;
-        --secondary-foreground: 222.2 47.4% 11.2%;
-
-        --muted: 210 40% 96.1%;
-        --muted-foreground: 215.4 16.3% 46.9%;
-
-        --accent: 210 40% 96.1%;
-        --accent-foreground: 222.2 47.4% 11.2%;
-
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 210 40% 98%;
-
-        --border: 214.3 31.8% 91.4%;
-        --input: 214.3 31.8% 91.4%;
-        --ring: 222.2 84% 4.9%;
-
-        --radius: 0.5rem;
-
-        --chart-1: 12 76% 61%;
-
-        --chart-2: 173 58% 39%;
-
-        --chart-3: 197 37% 24%;
-
-        --chart-4: 43 74% 66%;
-
-        --chart-5: 27 87% 67%;
-    }
-
-    .dark {
-        --background: 240 5% 6%;
-        --foreground: 60 5% 90%;
-        --primary: 240 0% 90%;
-        --primary-foreground: 60 0% 0%;
-        --secondary: 240 4% 15%;
-        --secondary-foreground: 60 5% 85%;
-        --accent: 240 0% 13%;
-        --accent-foreground: 60 0% 100%;
-        --destructive: 0 60% 50%;
-        --destructive-foreground: 0 0% 98%;
-        --muted: 240 5% 25%;
-        --muted-foreground: 240 5% 65%;
-        --card: 240 4% 10%;
-        --card-foreground: 60 5% 90%;
-        --popover: 240 5% 15%;
-        --popover-foreground: 60 5% 85%;
-        --border: 240 6% 20%;
-        --input: 240 6% 20%;
-        --ring: 240 5% 90%;
-        --radius: 0.5rem;
-    }
+  .light {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 11 90% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 39 100% 62%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 0 0% 25%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 11 90% 59%;
+  }
 }
 
-/* Calendar Dark Mode Styles */
-.dark .rbc-calendar {
-    background-color: var(--background);
-    color: var(--foreground);
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
 
-.dark .rbc-toolbar {
-    background-color: var(--card);
-    color: var(--card-foreground);
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.dark .rbc-toolbar button {
-    color: var(--foreground);
+::-webkit-scrollbar-track {
+  background: rgba(26, 26, 26, 0.5);
 }
 
-.dark .rbc-toolbar button:hover {
-    background-color: var(--accent);
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #f4503b, #ffbe3f);
+  border-radius: 4px;
 }
 
-.dark .rbc-toolbar button.rbc-active {
-    background-color: var(--primary);
-    color: var(--primary-foreground);
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #f4503b, #ffbe3f);
 }
 
-.dark .rbc-header {
-    background-color: var(--card);
-    color: var(--card-foreground);
-    border-color: var(--border);
+/* Animated background */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
 }
 
-.dark .rbc-month-view,
-.dark .rbc-time-view {
-    border-color: var(--border);
+.animate-pulse-slow {
+  animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.dark .rbc-day-bg {
-    background-color: var(--background);
+
+/* React Big Calendar Custom Styles */
+.rbc-calendar {
+  background-color: transparent;
+  color: #ffffff;
+  font-family: inherit;
 }
 
-.dark .rbc-off-range-bg {
-    background-color: var(--muted);
+.rbc-header {
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 12px 8px;
+  text-align: center;
 }
 
-.dark .rbc-today {
-    background-color: var(--accent);
+.rbc-header + .rbc-header {
+  border-left: 1px solid #3a3a3a;
 }
 
-.dark .rbc-event {
-    color: white;
+.rbc-month-view {
+  background-color: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
 }
 
-.dark .rbc-time-content,
-.dark .rbc-time-header-content,
-.dark .rbc-time-slot,
-.dark .rbc-day-slot .rbc-time-slot {
-    border-color: var(--border);
+.rbc-month-row {
+  border-bottom: 1px solid #2a2a2a;
 }
 
-.dark .rbc-current-time-indicator {
-    background-color: var(--primary);
+.rbc-month-row:last-child {
+  border-bottom: none;
 }
 
+.rbc-date-cell {
+  background-color: #1a1a1a;
+  border-right: 1px solid #2a2a2a;
+  padding: 8px;
+  min-height: 100px;
+}
+
+.rbc-date-cell:last-child {
+  border-right: none;
+}
+
+.rbc-date-cell.rbc-off-range {
+  background-color: #0a0a0a;
+  color: #666666;
+}
+
+.rbc-date-cell.rbc-now {
+  background-color: #2a2a2a;
+}
+
+.rbc-date-cell.rbc-today {
+  background-color: rgba(255, 31, 1, 0.1);
+}
+
+.rbc-button-link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.rbc-button-link:hover {
+  color: #f4503b;
+}
+
+.rbc-event {
+  transform: translateY(-50px);
+  height:50px;
+  background-color: #f4503b;
+  border: none;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 2px;
+  padding: 0px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.rbc-event:hover {
+  transform: translateY(-55px);
+}
+
+.rbc-event.rbc-selected {
+  background-color: #ffbe3f;
+  color: #000000;
+}
+
+.rbc-show-more {
+  background-color: transparent;
+  border: 1px solid #f4503b;
+  border-radius: 6px;
+  color: #f4503b;
+  font-size: 11px;
+  margin: 2px;
+  padding: 2px 6px;
+}
+
+.rbc-show-more:hover {
+  background-color: #f4503b;
+  color: #ffffff;
+}
+
+/* Week and Day Views */
+.rbc-time-view {
+  background-color: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rbc-time-header {
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.rbc-time-content {
+  background-color: #1a1a1a;
+}
+
+.rbc-time-slot {
+  border-top: 1px solid #2a2a2a;
+}
+
+.rbc-timeslot-group {
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.rbc-day-slot {
+  border-left: 1px solid #2a2a2a;
+}
+
+.rbc-current-time-indicator {
+  background-color: #f4503b;
+  height: 2px;
+}
+
+.rbc-current-time-indicator::before {
+  background-color: #f4503b;
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  left: -4px;
+  position: absolute;
+  top: -3px;
+  width: 8px;
+}
+
+/* Agenda View */
+.rbc-agenda-view {
+  background-color: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rbc-agenda-view table {
+  background-color: transparent;
+}
+
+.rbc-agenda-view .rbc-agenda-table {
+  background-color: #1a1a1a;
+}
+
+.rbc-agenda-view .rbc-agenda-table tbody > tr > td {
+  border-top: 1px solid #2a2a2a;
+  padding: 12px;
+}
+
+.rbc-agenda-view .rbc-agenda-table .rbc-agenda-time-cell {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rbc-agenda-view .rbc-agenda-table .rbc-agenda-event-cell {
+  color: #ffffff;
+}
+
+.rbc-agenda-view .rbc-agenda-table .rbc-agenda-date-cell {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Toolbar (hidden since we use custom) */
+.rbc-toolbar {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .rbc-date-cell {
+    min-height: 80px;
+    padding: 4px;
+  }
+
+  .rbc-event {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+}
 
 
 @layer base {

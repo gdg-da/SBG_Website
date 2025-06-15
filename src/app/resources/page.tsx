@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import sbglogo from "@/data/sbglogo.png";
 import resouresData from "@/data/resources.json"
+import Link from 'next/link';
+import { Mail } from "lucide-react";
 
 export default function Resources() {
   const [imageError, setImageError] = useState(false);
@@ -13,34 +13,42 @@ export default function Resources() {
   const categories = ['All', 'Acad', 'Programming', 'Development', 'Guide', 'Other'];
 
   return (
-    <div className="container mx-auto p-6 max-w-[90vw] min-h-screen flex flex-col">
-      <Card className="shadow-sm border-none rounded-lg flex-grow">
-        <CardHeader>
-          <CardTitle className="text-lg font-semibold flex items-center gap-2">
-            {imageError ? (
-              <span className="text-red-500">Logo Error</span>
-            ) : (
-              <Image
-                src={sbglogo}
-                alt="SBG Logo"
-                width={80}
-                height={80}
-                className="inline-block"
-                priority
-                onError={() => {
-                  console.log('SBG logo failed to load');
-                  setImageError(true);
-                }}
-              />
-            )}
-            <p className="text-4xl font-bold">Resources</p>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="All" className="w-full">
-            <TabsList className="grid w-full lg:grid-cols-6">
+    <div className="min-h-screen bg-background">
+        {/* Hero Section */}
+        <section className="relative overflow-hidden bg-theme-black">
+            <div className="absolute inset-0 z-0">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+            <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[200px] w-[200px] rounded-full bg-theme-yellow opacity-20 blur-[100px]"></div>
+            <div className="absolute bottom-0 left-0 -z-10 h-[200px] w-[200px] rounded-full bg-theme-red opacity-20 blur-[100px]"></div>
+            </div>
+
+            <div className="container relative z-10 px-4 py-16 md:px-6">
+            <div className="mx-auto max-w-4xl text-center">
+                {/* <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 px-3 py-1 text-sm backdrop-blur-sm">
+                <Icon className="h-8 w-8 text-theme-yellow" />
+                </div> */}
+                <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+                <span className="bg-gradient-to-r from-theme-yellow to-theme-red bg-clip-text text-transparent">
+                    Resources
+                </span>
+                </h1>
+                <p className="mt-4 text-xl text-muted-foreground">
+                    Curated list of resources useful in every student's life at DAU 
+                </p>
+            </div>
+            </div>
+
+        </section >
+
+    <div className="container mx-auto mt-6 p-6 flex flex-col">
+      <section className="container px-4 py-12 md:px-6">
+        <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray">
+        <div className="absolute inset-0 bg-gradient-to-br from-theme-red/20 to-theme-yellow/5 opacity-50" />
+          <div className="relative mx-auto max-w-7xl">
+          <Tabs defaultValue="All" className="w-full mt-6">
+            <TabsList className="grid w-full grid-cols-[repeat(auto-fit,minmax(100px,1fr))]">
               {categories.map((category) => (
-                <TabsTrigger key={category} value={category}>
+                <TabsTrigger className="rounded-full data-[state=active]:bg-theme-red data-[state=active]:text-white" key={category} value={category}>
                   {category}
                 </TabsTrigger>
               ))}
@@ -53,34 +61,45 @@ export default function Resources() {
                   {resouresData
                     .filter((resource) => category === 'All' || resource.category === category)
                     .map((resource) => (
-                      <Card key={resource.id} className="shadow-sm">
-                        <CardHeader>
-                          <CardTitle className="text-base font-medium">
-                            {resource.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-gray-600 text-sm">{resource.description}</p>
-                          <p className="text-gray-500 text-sm mt-1">
-                            By: {resource.by}
-                          </p>
-                          <a
-                            href={resource.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-500 hover:underline text-sm mt-2 inline-block"
-                          >
-                            Visit Resource
-                          </a>
-                        </CardContent>
-                      </Card>
+                      <div key={resource.id} className="group w-full p-2 relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray transition-all hover:shadow-lg">
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-theme-red/10 to-theme-yellow/5 opacity-0 transition-opacity group-hover:opacity-100" />
+
+                        {/* Animated background elements */}
+                        <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-theme-red opacity-5 transition-transform group-hover:scale-150" />
+                        <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-theme-yellow opacity-5 transition-transform group-hover:scale-150" />
+                        
+                        <Card key={resource.id} className="shadow-sm border-0">
+                          <CardHeader>
+                            <CardTitle className="text-base font-medium">
+                              {resource.title}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-gray-300 text-sm">{resource.description}</p>
+                            <p className="text-gray-500 text-sm mt-1 mb-2">
+                              By: {resource.by}
+                            </p>
+                            <Link 
+                              href={resource.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-sm group relative text-muted-foreground hover:text-theme-red">
+                              Visit Resource
+                              <span className="absolute -bottom-1 left-0 h-px w-0 bg-theme-red transition-all group-hover:w-full"></span>
+                            </Link>
+                          </CardContent>
+                        </Card>
+                      </div>
                     ))}
                 </div>
               </TabsContent>
             ))}
           </Tabs>
-        </CardContent>
-      </Card>
+          </div>
+          </div>
+        </section>
+    </div>
     </div>
   );
 }
