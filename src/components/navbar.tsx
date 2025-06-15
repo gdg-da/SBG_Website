@@ -99,7 +99,7 @@ export function SiteHeader() {
                 </Button>
             )}
             <ThemeToggle />
-            <MobileNav />
+            <MobileNav user={user} isAuthorized={isAuthorized}/>
           </nav>
         </div>
       </div>
@@ -171,7 +171,7 @@ function MainNav({user, isAuthorized}: Props) {
   )
 }
 
-function MobileNav() {
+function MobileNav({user, isAuthorized}: Props) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -191,18 +191,64 @@ function MobileNav() {
               <GraduationCap className="h-4 w-4 text-white" />
             </div>
           </div>
-          <span className="font-bold">SBG Portal</span>
+          <span className="font-bold">SBG DAU</span>
         </div>
-        <div className="relative mb-4">
+        {/* <div className="relative mb-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search..."
             className="w-full rounded-full border-theme-gray-light bg-theme-gray-light/30 pl-8 pr-4 focus-visible:ring-theme-red"
           />
-        </div>
+        </div> */}
         <nav className="grid gap-2 text-lg font-medium">
           <Link
+          href="/events"
+          className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+        >
+          Events
+          <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+        </Link>
+        <Link
+          href="/clubs"
+          className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+        >
+          Clubs
+          <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+        </Link>
+        <Link
+          href="/committees"
+          className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+        >
+          Committees
+          <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+        </Link>
+        <Link
+          href="/sbg"
+          className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+        >
+          SBG
+          <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+        </Link>
+        <Link
+          href="/resources"
+          className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+        >
+          Resources
+          <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+        </Link>
+
+        {user && user.email && isAuthorized && (
+            <Link
+              href="/add-event"
+              className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+            >
+              Add Event
+              <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+            </Link>
+        )}
+
+          {/* <Link
             href="/events"
             className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
           >
@@ -236,7 +282,7 @@ function MobileNav() {
           >
             About
             <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
-          </Link>
+          </Link> */}
         </nav>
       </SheetContent>
     </Sheet>

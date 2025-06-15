@@ -36,7 +36,7 @@ export default function SBGPage() {
                 <div className="relative mb-6 overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray p-1">
                     <div className="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=800')] bg-cover bg-center opacity-20" />
                     <div className="absolute inset-0 bg-gradient-to-br from-theme-black/80 via-theme-black/70 to-transparent" />
-                    <div className="relative flex justify-between items-center p-6">
+                    <div className="relative lg:flex lg:justify-between lg:items-center p-6">
                         <div className="flex items-center gap-4">
                             <div className="flex flex-col items-start space-y-4">
                                 <div className="space-y-2">
@@ -46,21 +46,30 @@ export default function SBGPage() {
                             </div>
                         </div>
 
-                        <div className="group w-fit p-4 relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray transition-all hover:scale-105 hover:shadow-lg">
+                        <div className="group w-fit max-sm:w-full max-sm:mt-8 max-sm:p-2 md:p-4 relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray transition-all hover:scale-105 hover:shadow-lg">
                             {/* Gradient overlay */}
                             <div className="absolute inset-0 bg-gradient-to-br from-theme-red/10 to-theme-yellow/5 opacity-0 transition-opacity group-hover:opacity-100" />
 
                             {/* Animated background elements */}
                             <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-theme-red opacity-5 transition-transform group-hover:scale-150" />
                             <div className="absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-theme-yellow opacity-5 transition-transform group-hover:scale-150" />
-                        
-                            <div className="relative flex justify-center items-center gap-4">
+
+                            <div className="relative flex justify-center items-center gap-4 max-sm:flex-col max-sm:items-center">
                                 <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 text-sm backdrop-blur-sm">
-                                    <Mail className="text-theme-yellow" />
+                                <Mail className="text-theme-yellow" />
                                 </div>
-                                <p><strong> {yearGroup.representatives.email} </strong></p>
+                                <p className="text-wrap">
+                                <strong>
+                                    {yearGroup.representatives.email.split('@').map((part, index) => (
+                                    <span key={index} className="max-sm:block">
+                                        {part}
+                                        {index === 0 && <span className="max-sm:inline">@</span>}
+                                    </span>
+                                    ))}
+                                </strong>
+                                </p>
                             </div>
-                        </div>
+                            </div>
                     </div>
                 </div>
             ))}

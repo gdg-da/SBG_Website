@@ -21,9 +21,11 @@ export function HeroSection() {
       <div className="container relative z-10 px-4 py-16 md:px-6 md:py-24 lg:py-32">
         <div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
           <div className="flex-1 space-y-6">
+            <div className="max-sm:w-full max-sm:flex max-sm:justify-center max-sm:items-center">
             <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 px-3 py-1 text-sm backdrop-blur-sm">
               <span className="mr-2 flex h-2 w-2 rounded-full bg-theme-red"></span>
               SBG DAU
+            </div>
             </div>
             <h1 className="text-center text-4xl font-bold tracking-tight lg:text-left lg:text-6xl">
               <span className="bg-gradient-to-r from-white to-theme-gray-lighter bg-clip-text text-transparent">
@@ -58,7 +60,7 @@ export function HeroSection() {
             </div>
           </div>
           <div className="flex flex-1 justify-center lg:justify-end">
-            <div className="relative h-[300px] w-[500px]">
+            <div className="relative h-[300px] w-[500px] max-sm:w-[350px] flex justify-center items-center">
                 <div className="absolute inset-0 rounded-full bg-theme-red opacity-10 blur-[50px]"></div>
                 <Image
                     src={dau}

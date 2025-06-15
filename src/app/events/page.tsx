@@ -163,7 +163,7 @@ export default function EventsPage() {
   }
 
   const CustomToolbar = ({ label, onNavigate, onView }: any) => (
-    <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <div className="mb-6 flex flex-col gap-4 max-sm:ml-2 max-sm:mr-2 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">
           <Button
@@ -270,8 +270,8 @@ export default function EventsPage() {
           {/* <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-1 items-center gap-4"> */}
-              <div className="w-full flex justify-center items-center gap-6">
-              <p className="mt-6 text-xl text-muted-foreground">Search Events</p>
+              <div className="w-full flex justify-center items-center gap-6 max-sm:pl-4 max-sm:pr-4">
+              <p className="mt-6 text-xl text-muted-foreground max-sm:hidden">Search Events</p>
                 <div className="relative mt-6 max-w-md">
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                   <Input
@@ -306,7 +306,7 @@ export default function EventsPage() {
           <FuturisticDivider className="my-4" />
 
           {/* Calendar */}
-          <div className="pt-4 pb-4">
+          <div className="pt-4 md:pb-4">
             <Calendar
               localizer={localizer}
               events={filteredEvents}

@@ -117,7 +117,7 @@ export default function CommitteesPage() {
                 <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex flex-1 items-center gap-4">
-                        <p className="text-xl mr-4 text-muted-foreground">Search Committees</p>
+                        <p className="text-xl mr-4 text-muted-foreground max-sm:hidden">Search Committees</p>
                         <div className="relative flex-1 max-w-md">
                         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
