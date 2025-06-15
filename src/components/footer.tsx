@@ -124,7 +124,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-theme-gray-light pt-8 text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Student Government Association. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Student Body Government. All rights reserved.</p>
           <p className="mt-2 text-xs">Powered by people ✦ Driven by purpose</p>
           <div className='flex justify-center items-center w-full'>
             <div className='mt-8 w-1/2 border-t border-theme-gray-light pt-8 text-center text-sm text-muted-foreground'>

@@ -87,7 +87,75 @@ export default function EventsPage() {
     if (!mounted) {
         return null;
     }
-
+    
+    const CustomToolbar = ({ label, onNavigate, onView }: any) => (
+      <div className="mb-6 flex flex-col gap-4 max-sm:ml-2 max-sm:mr-2 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onNavigate("PREV")}
+              className="rounded-full hover:bg-theme-gray-light"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h2 className="text-xl font-bold">{label}</h2>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onNavigate("NEXT")}
+              className="rounded-full hover:bg-theme-gray-light"
+            >
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onNavigate("TODAY")}
+            className="rounded-full border-theme-gray-light hover:bg-theme-gray-light"
+          >
+            Today
+          </Button>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant={view === "month" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => onView("month")}
+            className="rounded-full"
+          >
+            Month
+          </Button>
+          <Button
+            variant={view === "week" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => onView("week")}
+            className="rounded-full"
+          >
+            Week
+          </Button>
+          <Button
+            variant={view === "day" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => onView("day")}
+            className="rounded-full"
+          >
+            Day
+          </Button>
+          <Button
+            variant={view === "agenda" ? "default" : "ghost"}
+            size="sm"
+            onClick={() => onView("agenda")}
+            className="rounded-full"
+          >
+            Agenda
+          </Button>
+        </div>
+      </div>
+    )
+  
     const eventStyleGetter = (event: Event) => {
         let backgroundColor = "#FFBE3F"
         let borderColor = "#FFBE3F"
@@ -129,6 +197,7 @@ export default function EventsPage() {
                 backgroundColor = "#F4503B"
                 borderColor = "#F4503B"
         }
+
 
         return { backgroundColor, borderColor }
     }
@@ -240,6 +309,21 @@ export default function EventsPage() {
                         {/* <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-1 items-center gap-4"> */}
+
+              <div className="w-full flex justify-center items-center gap-6 max-sm:pl-4 max-sm:pr-4">
+              <p className="mt-6 text-xl text-muted-foreground max-sm:hidden">Search Events</p>
+                <div className="relative mt-6 max-w-md">
+                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    placeholder="Search events..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10 rounded-full border-theme-gray-light bg-theme-gray-light/30 focus-visible:ring-theme-red"
+                  />
+                </div>
+              </div>
+                {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+
                         <div className="w-full flex justify-center items-center gap-6">
                             <p className="mt-6 text-xl text-muted-foreground">Search Events</p>
                             <div className="relative mt-6 max-w-md">
@@ -253,6 +337,7 @@ export default function EventsPage() {
                             </div>
                         </div>
                         {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+
                   <SelectTrigger className="w-[180px] rounded-full border-theme-gray-light bg-theme-gray-light/30">
                     <Filter className="mr-2 h-4 w-4" />
                     <SelectValue placeholder="Category" />
@@ -275,36 +360,35 @@ export default function EventsPage() {
 
                         <FuturisticDivider className="my-4" />
 
-                        {/* Calendar */}
-                        <div className="pt-4 pb-4">
-                            <Calendar
-                                localizer={localizer}
-                                events={filteredEvents}
-                                startAccessor="startDate"
-                                endAccessor="endDate"
-                                style={{ height: 600 }}
-                                view={view}
-                                onView={handleViewChange}
-                                components={{
-                                    event: EventComponent,
-                                    toolbar: CustomToolbar,
-                                }}
-                                date={date}
-                                onNavigate={handleNavigate}
-                                eventPropGetter={(event: Event) => {
-                                    return { style: eventStyleGetter(event) };
-                                }}
-                            // formats={{
-                            //   monthHeaderFormat: "MMMM YYYY",
-                            //   dayHeaderFormat: "dddd, MMMM DD",
-                            //   dayRangeHeaderFormat: ({ start, end }) =>
-                            //     `${moment(start).format("MMMM DD")} - ${moment(end).format("MMMM DD, YYYY")}`,
-                            // }}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </section>
+          {/* Calendar */}
+          <div className="pt-4 md:pb-4">
+            <Calendar
+              localizer={localizer}
+              events={filteredEvents}
+              startAccessor="startDate"
+              endAccessor="endDate"
+              style={{ height: 600 }}
+              view={view}
+              onView={handleViewChange}
+              components={{
+                event: EventComponent,
+                toolbar: CustomToolbar,
+              }}
+              date={date}
+              onNavigate={handleNavigate}
+              eventPropGetter={(event: Event) => {
+                return { style: eventStyleGetter(event) };
+              }}
+              // formats={{
+              //   monthHeaderFormat: "MMMM YYYY",
+              //   dayHeaderFormat: "dddd, MMMM DD",
+              //   dayRangeHeaderFormat: ({ start, end }) =>
+              //     `${moment(start).format("MMMM DD")} - ${moment(end).format("MMMM DD, YYYY")}`,
+              // }}
+            />
+          </div>
+        </div>
+
         </div>
     );
 }

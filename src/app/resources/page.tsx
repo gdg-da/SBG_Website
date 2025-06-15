@@ -46,9 +46,11 @@ export default function Resources() {
         <div className="absolute inset-0 bg-gradient-to-br from-theme-red/20 to-theme-yellow/5 opacity-50" />
           <div className="relative mx-auto max-w-7xl">
           <Tabs defaultValue="All" className="w-full mt-6">
-            <TabsList className="grid w-full grid-cols-[repeat(auto-fit,minmax(100px,1fr))]">
+            <TabsList className="grid h-fit w-full grid-cols-[repeat(auto-fit,minmax(80px,1fr))] max-sm:gap-2 md:gap-4">
               {categories.map((category) => (
-                <TabsTrigger className="rounded-full data-[state=active]:bg-theme-red data-[state=active]:text-white" key={category} value={category}>
+                <TabsTrigger className="rounded-full text-sm max-sm:text-xs max-sm:py-1 md:py-2 data-[state=active]:bg-theme-red data-[state=active]:text-white" 
+                  key={category} value={category}
+                >
                   {category}
                 </TabsTrigger>
               ))}
@@ -57,7 +59,7 @@ export default function Resources() {
               <TabsContent key={category} value={category}>
                 <div className="flex flex-wrap gap-2 overflow-x-auto pb-2 
                 sm:grid sm:grid-cols-2 sm:gap-4
-                md:grid-cols-4 md:gap-4">
+                md:grid-cols-4 md:gap-4 max-sm:mt-4">
                   {resouresData
                     .filter((resource) => category === 'All' || resource.category === category)
                     .map((resource) => (
