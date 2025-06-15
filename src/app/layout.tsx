@@ -4,7 +4,6 @@ import "./globals.css"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/navbar"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Separator } from "@/components/ui/separator";
 import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })

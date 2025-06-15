@@ -3,10 +3,11 @@ import { connectDB } from '@/lib/mongodb';
 import { verifyFirebaseToken, isAuthorizedUser } from '@/lib/firebaseAdmin';
 import Club from '@/models/Club';
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
     try {
+        const id = request.nextUrl.pathname.split('/').pop();
         await connectDB();
-        const club = await Club.findOne({ id: params.id });
+        const club = await Club.findOne({ id });
 
         if (!club) {
             return NextResponse.json({ message: 'Club not found' }, { status: 404 });
@@ -18,8 +19,9 @@ export async function GET({ params }: { params: { id: string } }) {
     }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest) {
     try {
+        const id = request.nextUrl.pathname.split('/').pop();
         const body = await request.json();
         const { idToken, ...clubData } = body;
 
@@ -41,7 +43,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
         await connectDB();
 
-        const updatedClub = await Club.findOneAndUpdate({ id: params.id }, clubData, { new: true });
+        const updatedClub = await Club.findOneAndUpdate({ id: id }, clubData, { new: true });
 
         if (!updatedClub) {
             return NextResponse.json({ message: 'Club not found' }, { status: 404 });

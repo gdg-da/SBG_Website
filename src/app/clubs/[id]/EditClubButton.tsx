@@ -27,7 +27,7 @@ export default function EditClubButton({ clubId }: { clubId: number }) {
     }
 
     return (
-        <div className="absolute top-10 right-10">
+        <div className="absolute top-10 right-10 z-50">
             <Link href={`/clubs/${clubId}/edit`}>
                 <Button variant="outline">Edit Club</Button>
             </Link>
