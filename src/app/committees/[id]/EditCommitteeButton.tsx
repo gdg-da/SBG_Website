@@ -27,7 +27,7 @@ export default function EditCommitteeButton({ committeeId }: { committeeId: numb
     }
 
     return (
-        <div className="absolute top-10 right-10 z-10">
+        <div className="absolute top-10 right-10 z-50">
             <Link href={`/committees/${committeeId}/edit`}>
                 <Button variant="outline">Edit Committee</Button>
             </Link>

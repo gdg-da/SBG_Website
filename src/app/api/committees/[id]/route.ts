@@ -3,10 +3,11 @@ import { connectDB } from '@/lib/mongodb';
 import { verifyFirebaseToken, isAuthorizedUser } from '@/lib/firebaseAdmin';
 import Committee from '@/models/Committee';
 
-export async function GET({ params }: { params: { id: string } }) {
+export async function GET(request: NextRequest) {
     try {
+        const id = request.nextUrl.pathname.split('/').pop();
         await connectDB();
-        const committee = await Committee.findOne({ id: params.id });
+        const committee = await Committee.findOne({ id: id });
 
         if (!committee) {
             return NextResponse.json({ message: 'Committee not found' }, { status: 404 });
@@ -18,8 +19,9 @@ export async function GET({ params }: { params: { id: string } }) {
     }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest) {
     try {
+        const id = request.nextUrl.pathname.split('/').pop();
         const body = await request.json();
         const { idToken, ...committeeData } = body;
 
@@ -41,7 +43,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
         await connectDB();
 
-        const updatedCommittee = await Committee.findOneAndUpdate({ id: params.id }, committeeData, { new: true });
+        const updatedCommittee = await Committee.findOneAndUpdate({ id: id }, committeeData, { new: true });
 
         if (!updatedCommittee) {
             return NextResponse.json({ message: 'Committee not found' }, { status: 404 });
