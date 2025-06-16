@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { Search, Users } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FuturisticDivider } from "@/components/futuristic-divider";
 import { Input } from "@/components/ui/input";
 import { ClubCard } from "@/components/club-committee/club-card";
+import { useCommittees } from "@/lib/swr/committees_swr";
 
 interface Committee {
     id: number;
@@ -20,11 +21,16 @@ interface Committee {
 }
 
 export default function CommitteesPage() {
-    const [committees, setCommittees] = useState<Committee[]>([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const { committees, isLoading, isError } = useCommittees();
 
-    const filteredCommittees = committees.filter((committee) => {
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    }
+
+    if (isError) alert("Failed to load committees");;
+
+    const filteredCommittees = committees.filter((committee:Committee) => {
         const matchesSearch =
             committee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             committee.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -32,26 +38,6 @@ export default function CommitteesPage() {
             committee.dyConvenerName.toLowerCase().includes(searchTerm.toLowerCase())
         return matchesSearch
     })
-
-    useEffect(() => {
-        const fetchCommittees = async () => {
-            try {
-                const response = await fetch('/api/committees');
-                const data = await response.json();
-                setCommittees(data);
-            } catch (error) {
-                console.error('Error fetching committees:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchCommittees();
-    }, []);
-
-    if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-    }
 
     return (
         <div className="min-h-screen bg-background">
@@ -103,7 +89,7 @@ export default function CommitteesPage() {
                     </div>
                     <FuturisticDivider className="my-4" />
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredCommittees.map((committee) => (
+                        {filteredCommittees.map((committee:Committee) => (
                             <Link key={committee.id} href={`/committees/${committee.id}`}><ClubCard key={committee.id} club={committee} /></Link>
                         ))}
                     </div>

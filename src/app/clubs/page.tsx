@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Users } from "lucide-react";
 import { ClubCard } from "@/components/club-committee/club-card";
 import { FuturisticDivider } from "@/components/futuristic-divider";
 import { Input } from "@/components/ui/input";
+import { useClubs } from '@/lib/swr/clubs_swr';
 
 interface Club {
     id: number;
@@ -21,11 +22,18 @@ interface Club {
 }
 
 export default function ClubsPage() {
-    const [clubs, setClubs] = useState<Club[]>([]);
-    const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-
-    const filteredClubs = clubs.filter((club) => {
+    const { clubs, isLoading, isError } = useClubs();
+    
+    if (isLoading) {
+        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    }
+    
+    if (isError) {
+        alert("Failed to load events");
+    }
+    
+    const filteredClubs = clubs.filter((club:Club) => {
         const matchesSearch =
             club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             club.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -33,26 +41,6 @@ export default function ClubsPage() {
             club.dyConvenerName.toLowerCase().includes(searchTerm.toLowerCase())
         return matchesSearch
     })
-
-    useEffect(() => {
-        const fetchClubs = async () => {
-            try {
-                const response = await fetch('/api/clubs');
-                const data = await response.json();
-                setClubs(data);
-            } catch (error) {
-                console.error('Error fetching clubs:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchClubs();
-    }, []);
-
-    if (loading) {
-        return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-    }
 
     return (
         <div className="min-h-screen bg-background">
@@ -103,7 +91,7 @@ export default function ClubsPage() {
                     </div>
                     <FuturisticDivider className="my-4" />
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredClubs.map((club) => (
+                        {filteredClubs.map((club:Club) => (
                             <Link key={club.id} href={`/clubs/${club.id}`}><ClubCard key={club.id} club={club} /></Link>
                         ))}
                     </div>
