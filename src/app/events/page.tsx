@@ -86,7 +86,7 @@ export default function EventsPage() {
     if (!mounted) {
         return null;
     }
-    
+
     const eventStyleGetter = (event: Event) => {
         let backgroundColor = "#FFBE3F"
         let borderColor = "#FFBE3F"
@@ -209,7 +209,6 @@ export default function EventsPage() {
                     <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[200px] w-[200px] rounded-full bg-theme-red opacity-20 blur-[100px]"></div>
                     <div className="absolute bottom-0 right-0 -z-10 h-[200px] w-[200px] rounded-full bg-theme-yellow opacity-20 blur-[100px]"></div>
                 </div>
-
                 <div className="container relative z-10 px-4 py-16 md:px-6">
                     <div className="mx-auto max-w-4xl text-center">
                         <div className="inline-flex items-center rounded-full border border-theme-gray-light bg-theme-gray-light/30 px-3 py-1 text-sm backdrop-blur-sm">
@@ -230,33 +229,12 @@ export default function EventsPage() {
                     </div>
                 </div>
             </section>
-
-            {/* Main Content */}
             <section className="container px-4 py-12 md:px-6">
                 <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray">
                     <div className="absolute inset-0 bg-gradient-to-br from-theme-red/20 to-theme-yellow/5 opacity-50" />
                     <div className="relative mx-auto max-w-7xl">
-                        {/* Filters and Search */}
-                        {/* <div className="mb-8 rounded-2xl border border-theme-gray-light bg-theme-gray p-6">
-                          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                          <div className="flex flex-1 items-center gap-4"> */}
-
-                    <div className="w-full flex justify-center items-center gap-6 max-sm:pl-4 max-sm:pr-4">
-                    <p className="mt-6 text-xl text-muted-foreground max-sm:hidden">Search Events</p>
-                      <div className="relative mt-6 max-w-md">
-                        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                        <Input
-                          placeholder="Search events..."
-                          value={searchTerm}
-                          onChange={(e) => setSearchTerm(e.target.value)}
-                          className="pl-10 rounded-full border-theme-gray-light bg-theme-gray-light/30 focus-visible:ring-theme-red"
-                        />
-                      </div>
-                    </div>
-                {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-
-                        <div className="w-full flex justify-center items-center gap-6">
-                            <p className="mt-6 text-xl text-muted-foreground">Search Events</p>
+                        <div className="w-full flex justify-center items-center gap-6 max-sm:pl-4 max-sm:pr-4">
+                            <p className="mt-6 text-xl text-muted-foreground max-sm:hidden">Search Events</p>
                             <div className="relative mt-6 max-w-md">
                                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                 <Input
@@ -267,61 +245,30 @@ export default function EventsPage() {
                                 />
                             </div>
                         </div>
-                        {/* <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-
-                  <SelectTrigger className="w-[180px] rounded-full border-theme-gray-light bg-theme-gray-light/30">
-                    <Filter className="mr-2 h-4 w-4" />
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent className="border-theme-gray-light bg-theme-black">
-                    <SelectItem value="all">All Categories</SelectItem>
-                    <SelectItem value="workshop">Workshop</SelectItem>
-                    <SelectItem value="forum">Forum</SelectItem>
-                    <SelectItem value="meeting">Meeting</SelectItem>
-                    <SelectItem value="orientation">Orientation</SelectItem>
-                    <SelectItem value="planning">Planning</SelectItem>
-                    <SelectItem value="awareness">Awareness</SelectItem>
-                    <SelectItem value="election">Election</SelectItem>
-                    <SelectItem value="fair">Fair</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div> */}
-
-          <FuturisticDivider className="my-4" />
-
-          {/* Calendar */}
-          <div className="pt-4 md:pb-4">
-            <Calendar
-              localizer={localizer}
-              events={filteredEvents}
-              startAccessor="startDate"
-              endAccessor="endDate"
-              style={{ height: 600 }}
-              view={view}
-              onView={handleViewChange}
-              components={{
-                event: EventComponent,
-                toolbar: CustomToolbar,
-              }}
-              date={date}
-              onNavigate={handleNavigate}
-              eventPropGetter={(event: Event) => {
-                return { style: eventStyleGetter(event) };
-              }}
-              // formats={{
-              //   monthHeaderFormat: "MMMM YYYY",
-              //   dayHeaderFormat: "dddd, MMMM DD",
-              //   dayRangeHeaderFormat: ({ start, end }) =>
-              //     `${moment(start).format("MMMM DD")} - ${moment(end).format("MMMM DD, YYYY")}`,
-              // }}
-            />
-          </div>
-        </div>
-        </div>
-        </section>
-
+                        <FuturisticDivider className="my-4" />
+                        <div className="pt-4 md:pb-4">
+                            <Calendar
+                                localizer={localizer}
+                                events={filteredEvents}
+                                startAccessor="startDate"
+                                endAccessor="endDate"
+                                style={{ height: 600 }}
+                                view={view}
+                                onView={handleViewChange}
+                                components={{
+                                    event: EventComponent,
+                                    toolbar: CustomToolbar,
+                                }}
+                                date={date}
+                                onNavigate={handleNavigate}
+                                eventPropGetter={(event: Event) => {
+                                    return { style: eventStyleGetter(event) };
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     );
 }

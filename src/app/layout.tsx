@@ -3,7 +3,6 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { Footer } from "@/components/footer"
 import { SiteHeader } from "@/components/navbar"
-import { ThemeProvider } from "@/components/theme-provider"
 import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -21,13 +20,11 @@ export default function RootLayout({ children, }: { children: React.ReactNode })
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/react-big-calendar@0.38.0/lib/css/react-big-calendar.css" />
             </head>
             <body className={inter.className}>
-                <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                    <div className="h-screen bg-background">
-                        <SiteHeader />
-                        <main className="overflow-y-auto">{children}</main>
-                        <Footer />
-                    </div>
-                </ThemeProvider>
+                <div className="h-screen bg-background">
+                    <SiteHeader />
+                    <main className="overflow-y-auto">{children}</main>
+                    <Footer />
+                </div>
             </body>
         </html>
     )

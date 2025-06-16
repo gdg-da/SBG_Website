@@ -130,7 +130,7 @@ export default function AddEvent() {
     }
 
     return (
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-2xl mx-auto my-16">
             <Card>
                 <CardHeader>
                     <CardTitle>Add New Event</CardTitle>
