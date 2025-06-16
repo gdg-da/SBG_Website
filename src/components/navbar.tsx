@@ -129,7 +129,7 @@ function MainNav({ user, isAuthorized }: Props) {
                     <span className="absolute -bottom-1 left-0 h-px w-0 bg-gradient-to-r from-theme-red to-theme-yellow transition-all group-hover:w-full"></span>
                 </Link>
                 {user && user.email && isAuthorized && (
-                    <div>
+                    <div className="w-fit flex justify-center items-center gap-4">
                         <Link
                             href="/add-event"
                             className="group relative flex items-center text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -152,8 +152,10 @@ function MainNav({ user, isAuthorized }: Props) {
 }
 
 function MobileNav({ user, isAuthorized }: Props) {
+    const [open, setOpen] = useState(false);
+
     return (
-        <Sheet>
+        <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button
                     variant="ghost"
@@ -165,6 +167,7 @@ function MobileNav({ user, isAuthorized }: Props) {
                 </Button>
             </SheetTrigger>
             <SheetContent side="right" className="border-theme-gray-light bg-theme-black">
+                <Link href="/" onClick={() => setOpen(false)}>
                 <div className="mb-4 flex items-center gap-2 border-b border-theme-gray-light pb-4">
                     <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-theme-red to-theme-yellow p-[1px]">
                         <div className="flex h-full w-full items-center justify-center rounded-full bg-theme-black">
@@ -173,8 +176,10 @@ function MobileNav({ user, isAuthorized }: Props) {
                     </div>
                     <span className="font-bold">SBG DAU</span>
                 </div>
+                </Link>
                 <nav className="grid gap-2 text-lg font-medium">
                     <Link
+                        onClick={() => setOpen(false)}
                         href="/events"
                         className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                     >
@@ -182,6 +187,7 @@ function MobileNav({ user, isAuthorized }: Props) {
                         <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </Link>
                     <Link
+                        onClick={() => setOpen(false)}
                         href="/clubs"
                         className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                     >
@@ -189,6 +195,7 @@ function MobileNav({ user, isAuthorized }: Props) {
                         <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </Link>
                     <Link
+                        onClick={() => setOpen(false)}
                         href="/committees"
                         className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                     >
@@ -196,6 +203,7 @@ function MobileNav({ user, isAuthorized }: Props) {
                         <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </Link>
                     <Link
+                        onClick={() => setOpen(false)}
                         href="/sbg"
                         className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                     >
@@ -203,6 +211,7 @@ function MobileNav({ user, isAuthorized }: Props) {
                         <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
                     </Link>
                     <Link
+                        onClick={() => setOpen(false)}
                         href="/resources"
                         className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                     >
@@ -211,13 +220,24 @@ function MobileNav({ user, isAuthorized }: Props) {
                     </Link>
 
                     {user && user.email && isAuthorized && (
+                        <div className="">
                         <Link
+                            onClick={() => setOpen(false)}
                             href="/add-event"
                             className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
                         >
                             Add Event
                             <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
                         </Link>
+                        <Link
+                            onClick={() => setOpen(false)}
+                            href="/add-announcement"
+                            className="group mt-2 flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+                        >
+                            Add Announcement
+                            <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+                        </Link>
+                        </div>
                     )}
                 </nav>
             </SheetContent>
