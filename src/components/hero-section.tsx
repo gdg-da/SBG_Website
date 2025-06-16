@@ -45,20 +45,20 @@ export function HeroSection() {
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
-                            <Button
+                            {/* <Button
                                 asChild
                                 size="lg"
                                 variant="outline"
                                 className="rounded-full border-theme-gray-light bg-theme-gray-light/30 backdrop-blur-sm hover:bg-theme-gray-light/50"
                             >
                                 <Link href="/contact">Contact Us</Link>
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                     <div className="flex flex-1 justify-center lg:justify-end">
                         <div className="relative h-[300px] w-[500px] max-sm:w-[350px] flex justify-center items-center">
                             <div className="absolute inset-0 rounded-full bg-theme-red opacity-10 blur-[50px]"></div>
-                            <Image src="/sbglogo.png" alt="SBG" width={500} height={500} className="" priority />
+                            <Image src="/dau.png" alt="SBG" width={500} height={500} className="" priority />
                         </div>
                     </div>
                 </div>

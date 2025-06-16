@@ -81,8 +81,8 @@ export default function HomePage() {
                                                 </div>
                                             ) : (
                                                 <>
-                                                    <StatCard title="Total Clubs" value={(clubData?.length || 0).toString()} icon="Users" />
-                                                    <StatCard title="Total Committees" value={(committeeData?.length || 0).toString()} icon="ClipboardList" />
+                                                    <Link href="/clubs"><StatCard title="Total Clubs" value={(clubData?.length || 0).toString()} icon="Users" /></Link>
+                                                    <Link href="/committees"><StatCard title="Total Committees" value={(committeeData?.length || 0).toString()} icon="ClipboardList" /></Link>
                                                 </>
                                             )}
                                         </div>
@@ -187,13 +187,6 @@ export default function HomePage() {
                                                 <span>Resources</span>
                                                 <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:text-theme-red group-hover:translate-x-1" />
                                             </Link>
-                                            <Link
-                                                href="/login"
-                                                className="group flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-colors hover:bg-theme-gray-light"
-                                            >
-                                                <span>Login</span>
-                                                <ChevronRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:text-theme-red group-hover:translate-x-1" />
-                                            </Link>
                                         </nav>
                                     </div>
                                 </div>
@@ -220,7 +213,7 @@ export default function HomePage() {
                                         <EventsList />
                                     </div>
                                 </div>
-                                <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray p-1">
+                                {/* <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray p-1">
                                     <div className="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=800')] bg-cover bg-center opacity-20" />
                                     <div className="absolute inset-0 bg-gradient-to-br from-theme-black/80 via-theme-black/70 to-transparent" />
                                     <div className="relative p-6">
@@ -231,7 +224,7 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
