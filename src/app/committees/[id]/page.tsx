@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import EditCommitteeButton from "./EditCommitteeButton";
 import { Mail } from "lucide-react";
+import { useCommittees } from "@/lib/swr/committees_swr";
 
 interface Committee {
     id: number;
@@ -23,6 +24,8 @@ export default function CommitteePage() {
     const [committee, setCommittee] = useState<Committee | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showLoading, setShowLoading] = useState(false);
+    const { committees, isLoading, isError } = useCommittees();
 
     const pathname = usePathname();
     const id = pathname.split('/').pop();
@@ -33,12 +36,6 @@ export default function CommitteePage() {
                 setLoading(true);
                 setError(null);
 
-                const response = await fetch('/api/committees');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch committees');
-                }
-
-                const committees = await response.json();
                 const foundCommittee = committees.find((c: Committee) => c.id.toString() === id);
 
                 if (!foundCommittee) {
@@ -46,6 +43,9 @@ export default function CommitteePage() {
                 }
 
                 setCommittee(foundCommittee);
+                const timer = setTimeout(() => {
+                    setShowLoading(true);
+                }, 300);
             } catch (err) {
                 console.error('Error fetching committee:', err);
                 setError(err instanceof Error ? err.message : 'Failed to fetch committee');
@@ -60,9 +60,9 @@ export default function CommitteePage() {
         }
     }, [id]);
 
-    if (loading) {
+    if ((loading || isLoading) && showLoading) {
         return (
-            <div className="space-y-6">
+            <div className="space-y-6 px-4 py-12 md:px-6">
                 <div className="animate-pulse">
                     <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
                     <div className="h-4 bg-gray-200 rounded w-2/3 mb-6"></div>
@@ -73,11 +73,11 @@ export default function CommitteePage() {
         );
     }
 
-    if (error || !committee) {
+    if (error || !committee || isError) {
         return (
             <div className="space-y-6">
                 <div className="text-center py-12">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-2">Committee Not Found</h1>
+                    <h1 className="text-2xl font-bold mb-2">Committee Not Found</h1>
                     <p className="text-gray-600">{error || 'The requested committee could not be found.'}</p>
                 </div>
             </div>

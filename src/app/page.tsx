@@ -9,16 +9,9 @@ import { StatCard } from "@/components/dashboard/stats-card"
 import { AnnouncementList } from "@/components/dashboard/announcement-list"
 import { EventsList } from "@/components/dashboard/event-list"
 import { FuturisticDivider } from "@/components/futuristic-divider"
-
-type Club = {
-    id: string;
-    name: string;
-};
-
-type Committee = {
-    id: string;
-    name: string;
-};
+import { useEvents } from '@/lib/swr/events_swr';
+import { useCommittees } from "@/lib/swr/committees_swr";
+import { useClubs } from "@/lib/swr/clubs_swr";
 
 type Event = {
     eventName: string;
@@ -29,35 +22,11 @@ type Event = {
 }
 
 export default function HomePage() {
-    const [clubData, setClubData] = useState<Club[] | null>(null);
-    const [committeeData, setCommitteeData] = useState<Committee[] | null>(null);
-    const [eventData, setEventData] = useState<Event[] | null>(null);
-    const [loading, setLoading] = useState(true);
+    const { events: eventData, isLoading: eventsLoading, isError: eventsError } = useEvents();
+    const { clubs: clubData, isLoading: clubsLoading, isError: clubsError } = useClubs();
+    const { committees: committeeData, isLoading: committeeLoading, isError: committeeError } = useCommittees();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [clubsResponse, committeesResponse, eventResponse] = await Promise.all([
-                    fetch('/api/clubs'),
-                    fetch('/api/committees'),
-                    fetch('/api/events')
-                ]);
-
-                const clubs = await clubsResponse.json();
-                const committees = await committeesResponse.json();
-                const events = await eventResponse.json();
-
-                setClubData(clubs);
-                setCommitteeData(committees);
-                setEventData(events);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
+    if (clubsError || eventsError || committeeError) console.error('Error fetching data:', eventsError);
 
     return (
         <div className="flex min-h-screen flex-col">
@@ -74,7 +43,7 @@ export default function HomePage() {
                                             <Star className="mr-2 h-5 w-5 text-theme-yellow" />SBG Stats
                                         </h2>
                                         <div className="grid gap-4">
-                                            {loading ? (
+                                            {(clubsLoading || eventsLoading || committeeLoading) ? (
                                                 <div className="animate-pulse space-y-4">
                                                     <div className="h-8 bg-gray-300 rounded animate-pulse"></div>
                                                     <div className="h-8 bg-gray-300 rounded animate-pulse"></div>
@@ -127,10 +96,10 @@ export default function HomePage() {
                                                 })()}
                                                 <div className="mt-2 flex items-center justify-center">
                                                     <span className="flex h-12 w-12 items-center justify-center rounded-full bg-theme-red text-2xl font-bold">
-                                                        {loading
+                                                        {(clubsLoading || eventsLoading || committeeLoading)
                                                             ? "-"
                                                             : eventData
-                                                                ? eventData.filter(event => {
+                                                                ? eventData.filter((event:Event) => {
                                                                     const eventStart = new Date(event.startDate);
                                                                     const eventEnd = new Date(event.endDate);
                                                                     const today = new Date();

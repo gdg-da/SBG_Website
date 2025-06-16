@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { FuturisticDivider } from "@/components/futuristic-divider"
 import { ArrowLeft, ArrowRight, CalendarIcon, Search } from "lucide-react";
 import type { ToolbarProps as RBC_ToolbarProps } from "react-big-calendar";
+import { useEvents } from '@/lib/swr/events_swr';
 
 const localizer = momentLocalizer(moment);
 
@@ -40,17 +41,9 @@ const EventComponent = ({ event }: { event: Event }) => (
 export default function EventsPage() {
     const [view, setView] = useState<View>("month")
     const [mounted, setMounted] = useState(false);
-    const [events, setEvents] = useState<Event[]>([]);
     const [date, setDate] = useState(new Date());
     const [searchTerm, setSearchTerm] = useState("");
-
-    const filteredEvents = events.filter((event) => {
-        const matchesSearch =
-            event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            event.aboutEvent.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            event.eventType.toLowerCase().includes(searchTerm.toLowerCase())
-        return matchesSearch
-    })
+    const { events, isLoading, isError } = useEvents();
 
     const handleNavigate = (newDate: Date) => {
         setDate(newDate);
@@ -62,30 +55,23 @@ export default function EventsPage() {
 
     useEffect(() => {
         setMounted(true);
-        const fetchEvents = async () => {
-            try {
-                const response = await fetch("/api/events", { method: "GET" });
-                if (response.ok) {
-                    const value = await response.json();
-                    const formattedEvents = value.map((event: Event) => ({
-                        ...event,
-                        startDate: new Date(event.startDate),
-                        endDate: new Date(event.endDate),
-                    }));
-                    setEvents(formattedEvents);
-                } else {
-                    alert("Failed to load events");
-                }
-            } catch (error) {
-                console.error("Error Loading Event Page:", error);
-            }
-        };
-        fetchEvents();
     }, []);
 
-    if (!mounted) {
+    if (isError) {
+        alert("Failed to load events");
+    }
+
+    if (!mounted || isLoading) {
         return null;
     }
+
+    const filteredEvents = events.filter((event:Event) => {
+        const matchesSearch =
+            event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            event.aboutEvent.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            event.eventType.toLowerCase().includes(searchTerm.toLowerCase())
+        return matchesSearch
+    })
 
     const eventStyleGetter = (event: Event) => {
         let backgroundColor = "#FFBE3F"

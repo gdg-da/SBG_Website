@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import EditClubButton from "./EditClubButton";
 import { Mail } from "lucide-react";
+import { useClubs } from '@/lib/swr/clubs_swr';
 
 interface Club {
     id: number;
@@ -23,6 +24,9 @@ export default function ClubPage() {
     const [club, setClub] = useState<Club | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [showLoading, setShowLoading] = useState(false);
+    const { clubs, isLoading, isError } = useClubs();
+
     const pathname = usePathname();
     const id = pathname.split('/').pop();
 
@@ -32,12 +36,6 @@ export default function ClubPage() {
                 setLoading(true);
                 setError(null);
 
-                const response = await fetch('/api/clubs');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch clubs');
-                }
-
-                const clubs = await response.json();
                 const foundClub = clubs.find((c: Club) => c.id.toString() === id);
 
                 if (!foundClub) {
@@ -45,6 +43,9 @@ export default function ClubPage() {
                 }
 
                 setClub(foundClub);
+                const timer = setTimeout(() => {
+                    setShowLoading(true);
+                }, 300);
             } catch (err) {
                 console.error('Error fetching club:', err);
                 setError(err instanceof Error ? err.message : 'Failed to fetch club');
@@ -59,7 +60,7 @@ export default function ClubPage() {
         }
     }, [id]);
 
-    if (loading) {
+    if ((loading || isLoading) && showLoading) {
         return (
             <div className="space-y-6">
                 <div className="animate-pulse">
@@ -72,7 +73,7 @@ export default function ClubPage() {
         );
     }
 
-    if (error || !club) {
+    if (error || !club || isError) {
         return (
             <div className="space-y-6">
                 <div className="text-center py-12">
