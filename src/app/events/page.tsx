@@ -68,9 +68,7 @@ export default function EventsPage() {
     }
 
     const handleEventClick = (event: Event) => {
-        if (isAuthorized) {
-            setSelectedEvent(event);
-        }
+        setSelectedEvent(event);
     };
 
     const handleDeleteEvent = async () => {
@@ -297,14 +295,15 @@ export default function EventsPage() {
                     </div>
                 </div>
             </section>
-            {/* Delete Event Modal */}
             {selectedEvent && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="relative max-w-md rounded-2xl border border-theme-gray-light bg-theme-gray p-6 shadow-xl">
+                    <div className="relative w-full max-w-3xl rounded-2xl border border-theme-gray-light bg-theme-gray p-6 shadow-xl">
                         <div className="absolute inset-0 bg-gradient-to-br from-theme-red/10 to-theme-yellow/5 opacity-50 rounded-2xl" />
                         <div className="relative">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-lg font-semibold text-white">Delete Event</h3>
+                                <h3 className="text-lg font-semibold text-white">
+                                    {isAuthorized ? "Delete Event" : "Event Details"}
+                                </h3>
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -315,7 +314,7 @@ export default function EventsPage() {
                                 </Button>
                             </div>
                             <div className="mb-6">
-                                <h4 className="font-medium text-white mb-2">{selectedEvent.eventName}</h4>
+                                <h1 className="text-xl font-bold text-white mb-2">{selectedEvent.eventName}</h1>
                                 <p className="text-sm text-muted-foreground mb-1">
                                     <strong>Type:</strong> {selectedEvent.eventType}
                                 </p>
@@ -325,38 +324,65 @@ export default function EventsPage() {
                                 <p className="text-sm text-muted-foreground mb-1">
                                     <strong>Date:</strong> {moment(selectedEvent.startDate).format('MMMM D, YYYY')}
                                 </p>
-                                <p className="text-sm text-muted-foreground">
+                                <p className="text-sm text-muted-foreground mb-1">
                                     <strong>Hosted by:</strong> {selectedEvent.hostedBy}
                                 </p>
+                                {selectedEvent.aboutEvent && (
+                                    <p className="text-sm text-muted-foreground mb-1">
+                                        <strong>About:</strong> {selectedEvent.aboutEvent}
+                                    </p>
+                                )}
+                                {selectedEvent.website && (
+                                    <p className="text-sm text-muted-foreground">
+                                        <strong>Website:</strong>
+                                        <a href={selectedEvent.website} target="_blank" rel="noopener noreferrer" className="text-theme-yellow hover:underline ml-1">
+                                            {selectedEvent.website}
+                                        </a>
+                                    </p>
+                                )}
                             </div>
-                            <p className="text-sm text-muted-foreground mb-6">
-                                Are you sure you want to delete this event? This action cannot be undone.
-                            </p>
-                            <div className="flex gap-3">
-                                <Button
-                                    variant="outline"
-                                    onClick={() => setSelectedEvent(null)}
-                                    className="flex-1 rounded-full border-theme-gray-light hover:bg-theme-gray-light"
-                                    disabled={isDeleting}
-                                >
-                                    Cancel
-                                </Button>
-                                <Button
-                                    variant="destructive"
-                                    onClick={handleDeleteEvent}
-                                    className="flex-1 rounded-full bg-red-600 hover:bg-red-700"
-                                    disabled={isDeleting}
-                                >
-                                    {isDeleting ? (
-                                        "Deleting..."
-                                    ) : (
-                                        <>
-                                            <Trash2 className="mr-2 h-4 w-4" />
-                                            Delete
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
+                            {isAuthorized ? (
+                                <>
+                                    <p className="text-sm text-muted-foreground mb-6">
+                                        Are you sure you want to delete this event? This action cannot be undone.
+                                    </p>
+                                    <div className="flex gap-3">
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => setSelectedEvent(null)}
+                                            className="flex-1 rounded-full border-theme-gray-light hover:bg-theme-gray-light"
+                                            disabled={isDeleting}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            variant="destructive"
+                                            onClick={handleDeleteEvent}
+                                            className="flex-1 rounded-full bg-red-600 hover:bg-red-700"
+                                            disabled={isDeleting}
+                                        >
+                                            {isDeleting ? (
+                                                "Deleting..."
+                                            ) : (
+                                                <>
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    Delete
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                </>
+                            ) : (
+                                <div className="flex justify-end">
+                                    <Button
+                                        variant="outline"
+                                        onClick={() => setSelectedEvent(null)}
+                                        className="rounded-full border-theme-gray-light hover:bg-theme-gray-light"
+                                    >
+                                        Close
+                                    </Button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
