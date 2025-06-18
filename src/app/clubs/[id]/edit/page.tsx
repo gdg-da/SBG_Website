@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/lib/firebaseConfig";
 import { getCurrentUserToken } from "@/lib/auth";
 import { toast } from "sonner";
+import { useClubs } from "@/lib/swr/clubs_swr";
 
 interface Club {
     id: number;
@@ -39,6 +40,7 @@ export default function EditClubPage() {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(auth.currentUser);
     const [authLoading, setAuthLoading] = useState(true);
+    const { clubs, isLoading, isError } = useClubs();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -56,22 +58,9 @@ export default function EditClubPage() {
     }, [user, router]);
 
     useEffect(() => {
-        const fetchClub = async () => {
-            try {
-                const response = await fetch('/api/clubs');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch clubs');
-                }
-
-                const clubs = await response.json();
-
-                const foundClub = clubs.find((c: Club) => c.id.toString() === id);
-
-                if (!foundClub) {
-                    throw new Error('Club not found');
-                    return;
-                }
-
+        if (!isLoading && clubs) {
+            const foundClub = clubs.find((c: Club) => c.id.toString() === id);
+            if (foundClub) {
                 setClub({
                     name: foundClub.name,
                     email: foundClub.email,
@@ -82,17 +71,16 @@ export default function EditClubPage() {
                     clubGroupPhoto: foundClub.clubGroupPhoto,
                     description: foundClub.description
                 });
-            } catch {
-                toast.error('Failed to fetch club data');
-            } finally {
-                setLoading(false);
+            } else {
+                toast.error('Club not found');
             }
-        };
-
-        if (id) {
-            fetchClub();
+            setLoading(false);
         }
-    }, [id]);
+        if (isError) {
+            toast.error('Failed to fetch club data');
+            setLoading(false);
+        }
+    }, [clubs, isLoading, isError, id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

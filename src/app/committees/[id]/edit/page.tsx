@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { auth } from "@/lib/firebaseConfig";
 import { getCurrentUserToken } from "@/lib/auth";
 import { toast } from "sonner";
+import { useCommittees } from "@/lib/swr/committees_swr";
 
 interface Committee {
     id: number;
@@ -39,6 +40,7 @@ export default function EditCommitteePage() {
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(auth.currentUser);
     const [authLoading, setAuthLoading] = useState(true);
+    const { committees, isLoading, isError } = useCommittees();
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -56,22 +58,9 @@ export default function EditCommitteePage() {
     }, [user, router]);
 
     useEffect(() => {
-        const fetchCommittee = async () => {
-            try {
-                const response = await fetch('/api/committees');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch committees');
-                }
-
-                const committees = await response.json();
-
-                const foundCommittee = committees.find((c: Committee) => c.id.toString() === id);
-
-                if (!foundCommittee) {
-                    throw new Error('Committee not found');
-                    return;
-                }
-
+        if (!isLoading && committees) {
+            const foundCommittee = committees.find((c: Committee) => c.id.toString() === id);
+            if (foundCommittee) {
                 setCommittee({
                     name: foundCommittee.name,
                     email: foundCommittee.email,
@@ -82,17 +71,16 @@ export default function EditCommitteePage() {
                     committeeGroupPhoto: foundCommittee.committeeGroupPhoto,
                     description: foundCommittee.description
                 });
-            } catch {
-                toast.error('Failed to fetch committee data');
-            } finally {
-                setLoading(false);
+            } else {
+                toast.error('Committee not found');
             }
-        };
-
-        if (id) {
-            fetchCommittee();
+            setLoading(false);
         }
-    }, [id]);
+        if (isError) {
+            toast.error('Failed to fetch committee data');
+            setLoading(false);
+        }
+    }, [committees, isLoading, isError, id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;

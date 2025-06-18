@@ -1,6 +1,6 @@
 import useSWR, { mutate } from 'swr';
 
-type Event = {
+export type Event = {
     eventName: string;
     startDate: string;
     endDate: string;
