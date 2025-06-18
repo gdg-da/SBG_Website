@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link"
-import { useEffect, useState } from "react"
 import { ArrowRight, ArrowUpRight, CalendarDays, ChevronRight, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroSection } from "@/components/hero-section";
@@ -99,7 +98,7 @@ export default function HomePage() {
                                                         {(clubsLoading || eventsLoading || committeeLoading)
                                                             ? "-"
                                                             : eventData
-                                                                ? eventData.filter((event:Event) => {
+                                                                ? eventData.filter((event: Event) => {
                                                                     const eventStart = new Date(event.startDate);
                                                                     const eventEnd = new Date(event.endDate);
                                                                     const today = new Date();
@@ -182,18 +181,6 @@ export default function HomePage() {
                                         <EventsList />
                                     </div>
                                 </div>
-                                {/* <div className="relative overflow-hidden rounded-2xl border border-theme-gray-light bg-theme-gray p-1">
-                                    <div className="absolute inset-0 bg-[url('/placeholder.svg?height=600&width=800')] bg-cover bg-center opacity-20" />
-                                    <div className="absolute inset-0 bg-gradient-to-br from-theme-black/80 via-theme-black/70 to-transparent" />
-                                    <div className="relative p-6">
-                                        <div className="flex flex-col items-start space-y-4">
-                                            <div className="space-y-2">
-                                                <h2 className="text-xl font-bold">Powered by people</h2>
-                                                <p className="text-muted-foreground">Driven by purpose</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                     </div>

@@ -36,8 +36,8 @@ export function SiteHeader() {
                 await signOut(auth);
                 alert("Only @dau.ac.in emails are allowed.");
             }
-        } catch (error) {
-            console.error("Login Error:", error);
+        } catch {
+            // Handle login failure (optional: show a toast or alert)
         }
     };
 
@@ -52,15 +52,9 @@ export function SiteHeader() {
                 <div className="flex flex-1 items-center justify-end space-x-4">
                     <nav className="flex items-center space-x-2">
                         {user ? (
-                            <Button
-                                onClick={handleLogout}
-                                variant="ghost"
-                                size="icon"
-                                className="rounded-full text-muted-foreground hover:bg-theme-gray-light hover:text-theme-red"
-                            >
-                                <LogIn className="h-5 w-5" />
-                                <span className="sr-only">Logout ({user.displayName})</span>
-                            </Button>
+                            <span className="rounded-lg text-muted-foreground px-3 py-1 bg-theme-gray-light/50 hover:text-theme-red cursor-pointer max-w-[160px] truncate" onClick={handleLogout}>
+                                Logout {user.displayName || user.email}
+                            </span>
                         ) : (
                             <Button
                                 onClick={handleLogin}
@@ -69,7 +63,6 @@ export function SiteHeader() {
                                 className="rounded-full text-muted-foreground hover:bg-theme-gray-light hover:text-theme-red"
                             >
                                 <LogIn className="h-5 w-5" />
-                                <span className="sr-only">Login </span>
                             </Button>
                         )}
                         <MobileNav user={user} isAuthorized={isAuthorized} />
@@ -168,14 +161,14 @@ function MobileNav({ user, isAuthorized }: Props) {
             </SheetTrigger>
             <SheetContent side="right" className="border-theme-gray-light bg-theme-black">
                 <Link href="/" onClick={() => setOpen(false)}>
-                <div className="mb-4 flex items-center gap-2 border-b border-theme-gray-light pb-4">
-                    <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-theme-red to-theme-yellow p-[1px]">
-                        <div className="flex h-full w-full items-center justify-center rounded-full bg-theme-black">
-                            <GraduationCap className="h-4 w-4 text-white" />
+                    <div className="mb-4 flex items-center gap-2 border-b border-theme-gray-light pb-4">
+                        <div className="relative flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-theme-red to-theme-yellow p-[1px]">
+                            <div className="flex h-full w-full items-center justify-center rounded-full bg-theme-black">
+                                <GraduationCap className="h-4 w-4 text-white" />
+                            </div>
                         </div>
+                        <span className="font-bold">SBG DAU</span>
                     </div>
-                    <span className="font-bold">SBG DAU</span>
-                </div>
                 </Link>
                 <nav className="grid gap-2 text-lg font-medium">
                     <Link
@@ -221,22 +214,22 @@ function MobileNav({ user, isAuthorized }: Props) {
 
                     {user && user.email && isAuthorized && (
                         <div className="">
-                        <Link
-                            onClick={() => setOpen(false)}
-                            href="/add-event"
-                            className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
-                        >
-                            Add Event
-                            <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
-                        </Link>
-                        <Link
-                            onClick={() => setOpen(false)}
-                            href="/add-announcement"
-                            className="group mt-2 flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
-                        >
-                            Add Announcement
-                            <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
-                        </Link>
+                            <Link
+                                onClick={() => setOpen(false)}
+                                href="/add-event"
+                                className="group flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+                            >
+                                Add Event
+                                <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+                            </Link>
+                            <Link
+                                onClick={() => setOpen(false)}
+                                href="/add-announcement"
+                                className="group mt-2 flex items-center justify-between rounded-lg p-2 hover:bg-theme-gray-light"
+                            >
+                                Add Announcement
+                                <div className="h-1.5 w-1.5 rounded-full bg-theme-red opacity-0 transition-opacity group-hover:opacity-100"></div>
+                            </Link>
                         </div>
                     )}
                 </nav>

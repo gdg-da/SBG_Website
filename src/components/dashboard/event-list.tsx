@@ -20,8 +20,8 @@ export function EventsList() {
 
                 const data = await response.json();
                 setEventData(data);
-            } catch (error) {
-                console.error('Error fetching events:', error);
+            } catch {
+                //handle error
             } finally {
                 setLoading(false);
             }

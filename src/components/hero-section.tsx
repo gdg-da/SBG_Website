@@ -45,14 +45,6 @@ export function HeroSection() {
                                     <ArrowRight className="ml-2 h-4 w-4" />
                                 </Link>
                             </Button>
-                            {/* <Button
-                                asChild
-                                size="lg"
-                                variant="outline"
-                                className="rounded-full border-theme-gray-light bg-theme-gray-light/30 backdrop-blur-sm hover:bg-theme-gray-light/50"
-                            >
-                                <Link href="/contact">Contact Us</Link>
-                            </Button> */}
                         </div>
                     </div>
                     <div className="flex flex-1 justify-center lg:justify-end">

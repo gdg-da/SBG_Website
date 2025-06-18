@@ -43,11 +43,11 @@ export default function CommitteePage() {
                 }
 
                 setCommittee(foundCommittee);
-                const timer = setTimeout(() => {
+
+                setTimeout(() => {
                     setShowLoading(true);
                 }, 300);
             } catch (err) {
-                console.error('Error fetching committee:', err);
                 setError(err instanceof Error ? err.message : 'Failed to fetch committee');
                 setCommittee(null);
             } finally {
@@ -58,7 +58,7 @@ export default function CommitteePage() {
         if (id) {
             fetchCommittee();
         }
-    }, [id]);
+    }, [id, committees]);
 
     if ((loading || isLoading) && showLoading) {
         return (

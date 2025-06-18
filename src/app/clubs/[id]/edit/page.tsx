@@ -82,8 +82,7 @@ export default function EditClubPage() {
                     clubGroupPhoto: foundClub.clubGroupPhoto,
                     description: foundClub.description
                 });
-            } catch (error) {
-                console.error('Error fetching club:', error);
+            } catch {
                 toast.error('Failed to fetch club data');
             } finally {
                 setLoading(false);
@@ -133,8 +132,7 @@ export default function EditClubPage() {
                 const errorData = await res.json();
                 toast.error(errorData.message || 'Failed to update club');
             }
-        } catch (error) {
-            console.error('Error updating club:', error);
+        } catch {
             toast.error('Error updating club');
         }
     };

@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss"
 
 const config = {
-    darkMode: ["class"],
     content: [
         "./pages/**/*.{ts,tsx}",
         "./components/**/*.{ts,tsx}",
@@ -52,7 +51,6 @@ const config = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
-                // Custom theme colors
                 "theme-red": "#F4503B",
                 "theme-yellow": "#FFBE3F",
                 "theme-black": "#000000",

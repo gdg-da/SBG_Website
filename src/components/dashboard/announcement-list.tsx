@@ -18,8 +18,8 @@ export function AnnouncementList() {
                 }
                 const data = await response.json();
                 setAnnouncements(data);
-            } catch (error) {
-                console.error('Error fetching announcements:', error);
+            } catch {
+                //handle error
             } finally {
                 setLoading(false);
             }

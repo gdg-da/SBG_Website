@@ -99,8 +99,7 @@ export default function AddAnnouncement() {
                 const errorData = await response.json();
                 toast.error(errorData.message || "Failed to add announcement");
             }
-        } catch (error) {
-            console.error("Error submitting form:", error);
+        } catch {
             toast.error("Error submitting form");
         } finally {
             setSubmitting(false);

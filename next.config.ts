@@ -15,7 +15,6 @@ const nextConfig: NextConfig = {
         FIREBASE_CLIENT_ID: process.env.FIREBASE_CLIENT_ID,
         MONGODB_URI: process.env.MONGODB_URI,
         SBG_EMAIL: process.env.SBG_EMAIL,
-        API_URL: process.env.API_URL,
     },
     images: {
         remotePatterns: [

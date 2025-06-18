@@ -24,16 +24,16 @@ interface Club {
 export default function ClubsPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const { clubs, isLoading, isError } = useClubs();
-    
+
     if (isLoading) {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
-    
+
     if (isError) {
         alert("Failed to load events");
     }
-    
-    const filteredClubs = clubs.filter((club:Club) => {
+
+    const filteredClubs = clubs.filter((club: Club) => {
         const matchesSearch =
             club.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             club.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -91,7 +91,7 @@ export default function ClubsPage() {
                     </div>
                     <FuturisticDivider className="my-4" />
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredClubs.map((club:Club) => (
+                        {filteredClubs.map((club: Club) => (
                             <Link key={club.id} href={`/clubs/${club.id}`}><ClubCard key={club.id} club={club} /></Link>
                         ))}
                     </div>

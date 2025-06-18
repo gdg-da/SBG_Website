@@ -13,7 +13,6 @@ export const signInWithGoogle = async () => {
 
         return user;
     } catch (error) {
-        console.error("Google Sign-In Error:", error);
         throw error;
     }
 };
@@ -21,8 +20,8 @@ export const signInWithGoogle = async () => {
 export const logout = async () => {
     try {
         await signOut(auth);
-    } catch (error) {
-        console.error("Logout Error:", error);
+    } catch {
+        //handle error
     }
 };
 
@@ -33,8 +32,7 @@ export const getCurrentUserToken = async (): Promise<string | null> => {
             return await user.getIdToken();
         }
         return null;
-    } catch (error) {
-        console.error("Error getting user token:", error);
+    } catch {
         return null;
     }
 };

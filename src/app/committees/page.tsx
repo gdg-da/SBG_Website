@@ -30,7 +30,7 @@ export default function CommitteesPage() {
 
     if (isError) alert("Failed to load committees");;
 
-    const filteredCommittees = committees.filter((committee:Committee) => {
+    const filteredCommittees = committees.filter((committee: Committee) => {
         const matchesSearch =
             committee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             committee.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -89,11 +89,10 @@ export default function CommitteesPage() {
                     </div>
                     <FuturisticDivider className="my-4" />
                     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                        {filteredCommittees.map((committee:Committee) => (
+                        {filteredCommittees.map((committee: Committee) => (
                             <Link key={committee.id} href={`/committees/${committee.id}`}><ClubCard key={committee.id} club={committee} /></Link>
                         ))}
                     </div>
-
                     {filteredCommittees.length === 0 && (
                         <div className="py-12 text-center">
                             <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-theme-gray-light/30 flex items-center justify-center"><Users className="h-12 w-12 text-muted-foreground" /></div>

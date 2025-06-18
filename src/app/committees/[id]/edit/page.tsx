@@ -82,8 +82,7 @@ export default function EditCommitteePage() {
                     committeeGroupPhoto: foundCommittee.committeeGroupPhoto,
                     description: foundCommittee.description
                 });
-            } catch (error) {
-                console.error('Error fetching committee:', error);
+            } catch {
                 toast.error('Failed to fetch committee data');
             } finally {
                 setLoading(false);
@@ -133,8 +132,7 @@ export default function EditCommitteePage() {
                 const errorData = await res.json();
                 toast.error(errorData.message || 'Failed to update committee');
             }
-        } catch (error) {
-            console.error('Error updating committee:', error);
+        } catch {
             toast.error('Error updating committee');
         }
     };

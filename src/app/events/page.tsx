@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { auth } from "@/lib/firebaseConfig";
 import { Calendar, momentLocalizer, type View } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FuturisticDivider } from "@/components/futuristic-divider"
-import { ArrowLeft, ArrowRight, CalendarIcon, Search } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarIcon, Search, Trash2, X } from "lucide-react";
 import type { ToolbarProps as RBC_ToolbarProps } from "react-big-calendar";
-import { useEvents } from '@/lib/swr/events_swr';
+import { useEvents, deleteEvent } from '@/lib/swr/events_swr';
 
 const localizer = momentLocalizer(moment);
 
@@ -43,7 +44,20 @@ export default function EventsPage() {
     const [mounted, setMounted] = useState(false);
     const [date, setDate] = useState(new Date());
     const [searchTerm, setSearchTerm] = useState("");
+    const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
     const { events, isLoading, isError } = useEvents();
+    const [user, setUser] = useState(auth.currentUser);
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const isAuthorized = user && user.email === process.env.SBG_EMAIL
 
     const handleNavigate = (newDate: Date) => {
         setDate(newDate);
@@ -52,6 +66,29 @@ export default function EventsPage() {
     const handleViewChange = (newView: View) => {
         setView(newView);
     }
+
+    const handleEventClick = (event: Event) => {
+        if (isAuthorized) {
+            setSelectedEvent(event);
+        }
+    };
+
+    const handleDeleteEvent = async () => {
+        if (!selectedEvent || !user) return;
+
+        setIsDeleting(true);
+        try {
+            const idToken = await user.getIdToken();
+            await deleteEvent(selectedEvent._id, idToken);
+            setSelectedEvent(null);
+            alert('Event deleted successfully!');
+        } catch (error) {
+            console.error('Error deleting event:', error);
+            alert('Failed to delete event. Please try again.');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     useEffect(() => {
         setMounted(true);
@@ -65,7 +102,7 @@ export default function EventsPage() {
         return null;
     }
 
-    const filteredEvents = events.filter((event:Event) => {
+    const filteredEvents = events.filter((event: Event) => {
         const matchesSearch =
             event.eventName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             event.aboutEvent.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -114,7 +151,6 @@ export default function EventsPage() {
                 backgroundColor = "#F4503B"
                 borderColor = "#F4503B"
         }
-
 
         return { backgroundColor, borderColor }
     }
@@ -212,6 +248,11 @@ export default function EventsPage() {
                         <p className="mt-4 text-xl text-muted-foreground">
                             Stay updated with all student government events, meetings, and activities.
                         </p>
+                        {isAuthorized && (
+                            <p className="mt-2 text-sm text-theme-yellow">
+                                As an SBG member, you can click on events to delete them.
+                            </p>
+                        )}
                     </div>
                 </div>
             </section>
@@ -250,11 +291,76 @@ export default function EventsPage() {
                                 eventPropGetter={(event: Event) => {
                                     return { style: eventStyleGetter(event) };
                                 }}
+                                onSelectEvent={handleEventClick}
                             />
                         </div>
                     </div>
                 </div>
             </section>
+            {/* Delete Event Modal */}
+            {selectedEvent && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className="relative max-w-md rounded-2xl border border-theme-gray-light bg-theme-gray p-6 shadow-xl">
+                        <div className="absolute inset-0 bg-gradient-to-br from-theme-red/10 to-theme-yellow/5 opacity-50 rounded-2xl" />
+                        <div className="relative">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold text-white">Delete Event</h3>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setSelectedEvent(null)}
+                                    className="h-8 w-8 rounded-full hover:bg-theme-gray-light"
+                                >
+                                    <X className="h-4 w-4" />
+                                </Button>
+                            </div>
+                            <div className="mb-6">
+                                <h4 className="font-medium text-white mb-2">{selectedEvent.eventName}</h4>
+                                <p className="text-sm text-muted-foreground mb-1">
+                                    <strong>Type:</strong> {selectedEvent.eventType}
+                                </p>
+                                <p className="text-sm text-muted-foreground mb-1">
+                                    <strong>Location:</strong> {selectedEvent.location}
+                                </p>
+                                <p className="text-sm text-muted-foreground mb-1">
+                                    <strong>Date:</strong> {moment(selectedEvent.startDate).format('MMMM D, YYYY')}
+                                </p>
+                                <p className="text-sm text-muted-foreground">
+                                    <strong>Hosted by:</strong> {selectedEvent.hostedBy}
+                                </p>
+                            </div>
+                            <p className="text-sm text-muted-foreground mb-6">
+                                Are you sure you want to delete this event? This action cannot be undone.
+                            </p>
+                            <div className="flex gap-3">
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setSelectedEvent(null)}
+                                    className="flex-1 rounded-full border-theme-gray-light hover:bg-theme-gray-light"
+                                    disabled={isDeleting}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="destructive"
+                                    onClick={handleDeleteEvent}
+                                    className="flex-1 rounded-full bg-red-600 hover:bg-red-700"
+                                    disabled={isDeleting}
+                                >
+                                    {isDeleting ? (
+                                        "Deleting..."
+                                    ) : (
+                                        <>
+                                            <Trash2 className="mr-2 h-4 w-4" />
+                                            Delete
+                                        </>
+                                    )}
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

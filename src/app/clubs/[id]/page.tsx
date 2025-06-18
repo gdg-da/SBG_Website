@@ -43,11 +43,11 @@ export default function ClubPage() {
                 }
 
                 setClub(foundClub);
-                const timer = setTimeout(() => {
+
+                setTimeout(() => {
                     setShowLoading(true);
                 }, 300);
             } catch (err) {
-                console.error('Error fetching club:', err);
                 setError(err instanceof Error ? err.message : 'Failed to fetch club');
                 setClub(null);
             } finally {
@@ -58,7 +58,7 @@ export default function ClubPage() {
         if (id) {
             fetchClub();
         }
-    }, [id]);
+    }, [id, clubs]);
 
     if ((loading || isLoading) && showLoading) {
         return (

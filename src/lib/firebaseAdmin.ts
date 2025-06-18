@@ -20,8 +20,7 @@ export async function verifyFirebaseToken(idToken: string) {
             email: decodedToken.email,
             emailVerified: decodedToken.email_verified,
         };
-    } catch (error) {
-        console.error('Error verifying Firebase token:', error);
+    } catch {
         throw new Error('Invalid or expired token');
     }
 }
