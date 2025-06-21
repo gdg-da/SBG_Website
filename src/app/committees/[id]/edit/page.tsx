@@ -144,7 +144,7 @@ export default function EditCommitteePage() {
     }
 
     if (!user) {
-        return null;
+        router.push("/");
     }
 
     return (

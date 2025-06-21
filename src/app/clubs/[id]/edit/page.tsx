@@ -144,7 +144,7 @@ export default function EditClubPage() {
     }
 
     if (!user) {
-        return null;
+        router.push("/");
     }
 
     return (
