@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import EditClubButton from "./EditClubButton";
+import DeleteClubButton from "./DeleteClubButton";
 import { Mail } from "lucide-react";
 import { useClubs } from '@/lib/swr/clubs_swr';
 
@@ -99,6 +100,7 @@ export default function ClubPage() {
                     </div>
                 </div>
                 <EditClubButton clubId={club.id} />
+                <DeleteClubButton clubId={club.id} />
             </section>
             <section className="container px-4 py-12 md:px-6">
                 <div className="mx-auto max-w-7xl">

@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Users } from "lucide-react";
-import { useState } from "react";
+import { auth } from "@/lib/firebaseConfig";
+import { Search, Users, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
 import { FuturisticDivider } from "@/components/futuristic-divider";
 import { Input } from "@/components/ui/input";
 import { ClubCard } from "@/components/club-committee/club-card";
+import { Button } from "@/components/ui/button";
 import { useCommittees } from "@/lib/swr/committees_swr";
+import { AddCommitteeModal } from "@/components/add-committee-modal";
 
 interface Committee {
     id: number;
@@ -22,13 +25,29 @@ interface Committee {
 
 export default function CommitteesPage() {
     const [searchTerm, setSearchTerm] = useState("");
-    const { committees, isLoading, isError } = useCommittees();
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [user, setUser] = useState(auth.currentUser);
+    const { committees, isLoading, isError, mutate } = useCommittees();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const isAuthorized = user && user.email === process.env.SBG_EMAIL
+
+    const handleCommitteeAdded = () => {
+        mutate();
+    };
 
     if (isLoading) {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
 
-    if (isError) alert("Failed to load committees");;
+    if (isError) alert("Failed to load committees");
 
     const filteredCommittees = committees.filter((committee: Committee) => {
         const matchesSearch =
@@ -84,6 +103,7 @@ export default function CommitteesPage() {
                                         className="pl-10 rounded-full border-theme-gray-light bg-theme-gray-light/30 focus-visible:ring-theme-red"
                                     />
                                 </div>
+                                {isAuthorized && (<Button onClick={() => setIsAddModalOpen(true)} className="bg-theme-red hover:bg-theme-red/90 text-white"><Plus className="mr-2 h-4 w-4" />Add Committee</Button>)}
                             </div>
                         </div>
                     </div>
@@ -96,12 +116,13 @@ export default function CommitteesPage() {
                     {filteredCommittees.length === 0 && (
                         <div className="py-12 text-center">
                             <div className="mx-auto mb-4 h-24 w-24 rounded-full bg-theme-gray-light/30 flex items-center justify-center"><Users className="h-12 w-12 text-muted-foreground" /></div>
-                            <h3 className="text-lg font-semibold">No clubs found</h3>
+                            <h3 className="text-lg font-semibold">No committees found</h3>
                             <p className="text-muted-foreground">Try adjusting your search or filter criteria.</p>
                         </div>
                     )}
                 </div>
             </section>
+            <AddCommitteeModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onCommitteeAdded={handleCommitteeAdded} />
         </div>
     );
 }

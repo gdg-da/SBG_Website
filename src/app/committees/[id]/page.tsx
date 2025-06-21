@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import EditCommitteeButton from "./EditCommitteeButton";
+import DeleteCommitteeButton from "./DeleteCommitteeButton";
 import { Mail } from "lucide-react";
 import { useCommittees } from "@/lib/swr/committees_swr";
 
@@ -99,6 +100,7 @@ export default function CommitteePage() {
                     </div>
                 </div>
                 <EditCommitteeButton committeeId={committee.id} />
+                <DeleteCommitteeButton committeeId={committee.id} />
             </section>
             <section className="container px-4 py-12 md:px-6">
                 <div className="mx-auto max-w-7xl">

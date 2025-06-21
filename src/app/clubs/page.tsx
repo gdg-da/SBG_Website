@@ -1,13 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { Search } from "lucide-react";
-import { useState } from "react";
+import { auth } from "@/lib/firebaseConfig";
+import { Search, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Users } from "lucide-react";
 import { ClubCard } from "@/components/club-committee/club-card";
 import { FuturisticDivider } from "@/components/futuristic-divider";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useClubs } from '@/lib/swr/clubs_swr';
+import { AddClubModal } from "@/components/add-club-modal";
 
 interface Club {
     id: number;
@@ -23,15 +26,29 @@ interface Club {
 
 export default function ClubsPage() {
     const [searchTerm, setSearchTerm] = useState("");
-    const { clubs, isLoading, isError } = useClubs();
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [user, setUser] = useState(auth.currentUser);
+    const { clubs, isLoading, isError, mutate } = useClubs();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+            setUser(user);
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    const isAuthorized = user && user.email === process.env.SBG_EMAIL
+
+    const handleClubAdded = () => {
+        mutate();
+    };
 
     if (isLoading) {
         return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
     }
 
-    if (isError) {
-        alert("Failed to load events");
-    }
+    if (isError) alert("Failed to load clubs");
 
     const filteredClubs = clubs.filter((club: Club) => {
         const matchesSearch =
@@ -87,6 +104,7 @@ export default function ClubsPage() {
                                     />
                                 </div>
                             </div>
+                            {isAuthorized && (<Button onClick={() => setIsAddModalOpen(true)} className="bg-theme-red hover:bg-theme-red/90 text-white"><Plus className="mr-2 h-4 w-4" />Add Club</Button>)}
                         </div>
                     </div>
                     <FuturisticDivider className="my-4" />
@@ -106,6 +124,7 @@ export default function ClubsPage() {
                     )}
                 </div>
             </section>
+            <AddClubModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onClubAdded={handleClubAdded} />
         </div>
     );
 }
